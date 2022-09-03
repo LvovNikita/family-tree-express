@@ -1,5 +1,16 @@
 <form action="<%= formActionSlug %>" method="POST">
-    <input type="text" name="username" placeholder="username">
-    <input type="password" name="password" placeholder="password">
+    <input 
+        type="text" 
+        name="username" 
+        placeholder="username" 
+        minlength="<%= usernameLength %> " 
+        required
+        autofocus>
+    <input 
+        type="password" 
+        name="password" 
+        placeholder="password" 
+        minlength="<%= passwordLength %> " 
+        required>
     <button type="submit"><%= title %></button>
 </form>

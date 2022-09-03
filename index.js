@@ -1,9 +1,11 @@
 'use strict'
 
-const http = require('http')
+const http = require('node:http')
 const express = require('express')
 const ejsLayouts = require('express-ejs-layouts')
 const swaggerUi = require('swagger-ui-express')
+
+const Logger = require('./config/Logger')
 
 // ENVIRONMENT VARIABLES
 const { HOST, PORT, NODE_ENV } = require('./config/env')
@@ -15,16 +17,14 @@ app.set('view engine', 'ejs')
 
 // MIDDLEWARE
 app.use(ejsLayouts)
-app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(require('./config/swagger.json')))
-
-const Logger = require('./config/Logger')
-
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
+
 if (NODE_ENV === 'development') {
     app.use(Logger('morgan'))
     app.use(Logger('body'))
     app.use(Logger('session'))
+    app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(require('./config/swagger.json')))
 }
 
 // ROUTES

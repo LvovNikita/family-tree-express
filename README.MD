@@ -9,11 +9,13 @@ npm run dev
 Протестировано на Node v16.15.1
 
 dependencies:
-* express
 * ejs
+* express
 * express-ejs-layouts
+* swagger-ui-express
 
 devDependencies:
+* eslint
 * morgan
 * nodemon
 
@@ -22,6 +24,8 @@ devDependencies:
 Добавить переменные:
 * HOST
 * PORT
+* MIN_USER_PASSWORD_LENGTH
+* MIN_USERNAME_LENGTH
 * NODE_ENV ('development' | 'production')
 
 Или изменить значения в файле ./config/env.js
@@ -37,3 +41,9 @@ devDependencies:
 ```
 npm run dev
 ```
+
+# Тестирование
+
+SwaggerUI в режиме разработки:
+* /api/docs
+
