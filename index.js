@@ -1,7 +1,6 @@
 'use strict'
 
 const express = require('express')
-const ejs = require('ejs')
 const ejsLayouts = require('express-ejs-layouts')
 
 // ENVIRONMENT VARIABLES
@@ -12,9 +11,12 @@ const app = express()
 app.set('view engine', 'ejs')
 
 // MIDDLEWARE
-const logger = require('./config/logging')
+const Logger = require('./config/Logger')
 
-app.use(logger)
+if (NODE_ENV === 'development') {
+    app.use(new Logger('morgan'))
+    app.use(new Logger('session'))
+}
 app.use(ejsLayouts)
 app.use(express.urlencoded({ extended: false }))
 
@@ -26,8 +28,8 @@ app.use('/', mainRouter)
 app.use('/auth', authRouter)
 app.use('/', (req, res, next) => {
     res
-    .status(404)
-    .end('404')
+        .status(404)
+        .end('404')
 })
 app.use((err, req, res, next) => {
     console.error(err.message)
