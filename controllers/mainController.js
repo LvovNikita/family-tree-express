@@ -5,8 +5,8 @@ const mainController = {
         try {
             // res.locals = { data: 'Data to layout!' }
             res
-            .status(200)
-            .render('index', { title: 'FamilyTree' } /*{ layout: 'layout' }*/)
+                .status(200)
+                .render('index', { title: 'FamilyTree' })
         } catch (err) {
             next(err)
         }

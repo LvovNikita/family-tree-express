@@ -1,5 +1,7 @@
 'use strict'
 
+const morgan = require('morgan')
+
 function loggerFabric (moduleName) {
     let logger
     if (moduleName === 'morgan') {
@@ -14,7 +16,15 @@ function loggerFabric (moduleName) {
         options = Object.keys(options).reduce((prev, curr) => {
             return options[curr] ? prev + curr + ' ' : ''
         }, '')
-        logger = require('morgan')(options)
+        logger = morgan(options)
+    }
+    if (moduleName === 'body') {
+        logger = (req, res, next) => {
+            if (req.method === 'POST') {
+                console.log(JSON.stringify(req.body))
+            }
+            next()
+        }
     }
     if (moduleName === 'session') {
         logger = (req, res, next) => {
@@ -24,6 +34,7 @@ function loggerFabric (moduleName) {
             next()
         }
     }
+    if (!logger) throw new ReferenceError('Please provide logging module name: morgan, body or session')
     return logger
 }
 

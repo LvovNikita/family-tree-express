@@ -15,21 +15,20 @@ const server = http.createServer(app)
 // MIDDLEWARE
 const Logger = require('./config/Logger')
 
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
 if (NODE_ENV === 'development') {
-    app.use(new Logger('morgan'))
-    app.use(new Logger('session'))
+    app.use(Logger('morgan'))
+    app.use(Logger('body'))
+    app.use(Logger('session'))
 }
 app.use(ejsLayouts)
-app.use(express.urlencoded({ extended: false }))
 
 // ROUTES
-const mainRouter = require('./routes/mainRouter')
-const authRouter = require('./routes/authRouter')
+app.use(require('./routes'))
+
 const notFound = require('./middleware/notFound')
 const catchErrors = require('./middleware/catchErrors')
-
-app.use('/', mainRouter)
-app.use('/auth', authRouter)
 app.use('/', notFound)
 app.use(catchErrors)
 
