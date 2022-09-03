@@ -1,0 +1,137 @@
+{
+    "openapi": "3.0.0",
+    "title": "FamilyTree API",
+    "version": "0.1.0",
+    "servers": [
+        {
+            "url": "{protocol}://localhost:{port}",
+            "description": "Local development server",
+            "variables": {
+                "protocol": {
+                    "enum": ["http"],
+                    "default": "http"
+                },
+                "port": {
+                    "enum": ["3000"],
+                    "default": "3000" 
+                }
+            }
+        }
+    ],
+    "paths": {
+        "/": {
+            "get": {
+                "summary": "Returns index page",
+                "responses": {
+                    "200": {
+                        "description": "OK: Returns EJS index template",
+                        "content": {
+                            "html/text": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "<html>...<h1>Index Page</h1>...</html>"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/register": {
+            "get": {
+                "summary": "Returns register page",
+                "responses": {
+                    "200": {
+                        "description": "OK: Returns EJS register template",
+                        "content": {
+                            "html/text": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "<html>...<h1>Register Page</h1>...</html>"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Creates a user",
+                "description": "Redirect to /auth/login if user was created or try again",
+                "requestBody": {
+                    "description": "Credentials from registration form fields: username, password",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserCredentials"
+                            },
+                            "examples": {
+                                "User": {
+                                    "$ref": "#/components/examples/UserCredentialsExample"
+                                },
+                                "Admin": {
+                                    "$ref": "#/components/examples/AdminCredentialsExample"
+                                }
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserCredentials"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "CREATED: User was created"
+                    },
+                    "302": {
+                        "description": "FOUND: Redirect to /auth/login"
+                    },
+                    "304": {
+                        "description": "NOT MODIFIED: Redirect back (refresh page)"
+                    },
+                    "400": {
+                        "description": "BAD REQUEST: Username/password validation error"
+                    },
+                    "409": {
+                        "description": "CONFLICT: User already exists"
+                    },
+                    "422": {
+                        "description": "UNPROCESSABLE ENTITY: Empty username/password"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "UserCredentials": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                },
+                "required": ["username", "password"]
+            }
+        },
+        "examples": {
+            "AdminCredentialsExample": {
+                "value": {
+                    "username": "admin",
+                    "password": "E7lK5R!7v10M"
+                }
+            },
+            "UserCredentialsExample": {
+                "value": {
+                    "username": "user",
+                    "password": "7r1i!2Go"
+                }
+            }
+        }
+    }   
+}

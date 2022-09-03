@@ -3,16 +3,20 @@
 const http = require('http')
 const express = require('express')
 const ejsLayouts = require('express-ejs-layouts')
+const swaggerUi = require('swagger-ui-express')
 
 // ENVIRONMENT VARIABLES
 const { HOST, PORT, NODE_ENV } = require('./config/env')
 
 // APP
 const app = express()
-app.set('view engine', 'ejs')
 const server = http.createServer(app)
+app.set('view engine', 'ejs')
 
 // MIDDLEWARE
+app.use(ejsLayouts)
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(require('./config/swagger.json')))
+
 const Logger = require('./config/Logger')
 
 app.use(express.urlencoded({ extended: false }))
@@ -22,15 +26,11 @@ if (NODE_ENV === 'development') {
     app.use(Logger('body'))
     app.use(Logger('session'))
 }
-app.use(ejsLayouts)
 
 // ROUTES
 app.use(require('./routes'))
-
-const notFound = require('./middleware/notFound')
-const catchErrors = require('./middleware/catchErrors')
-app.use('/', notFound)
-app.use(catchErrors)
+app.use('/', require('./middleware/notFound')) // 404
+app.use(require('./middleware/catchErrors')) // 500
 
 // START SERVER
 
