@@ -4,8 +4,8 @@ const authController = {
     getRegisterPage: (req, res, next) => {
         try {
             res
-            .status(200)
-            .render('register', { title: 'Register' })
+                .status(200)
+                .render('register', { title: 'Register' })
         } catch (err) {
             next(err)
         }
@@ -13,15 +13,15 @@ const authController = {
     getLoginPage: (req, res, next) => {
         try {
             res
-            .status(200)
-            .render('login', { title: 'Login' })
+                .status(200)
+                .render('login', { title: 'Login' })
         } catch (err) {
             next(err)
         }
     },
     logout: (req, res, next) => {
         res
-        .redirect('/')
+            .redirect('/')
     }
 }
 

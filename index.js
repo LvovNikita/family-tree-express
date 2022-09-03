@@ -1,5 +1,6 @@
 'use strict'
 
+const http = require('http')
 const express = require('express')
 const ejsLayouts = require('express-ejs-layouts')
 
@@ -9,6 +10,7 @@ const { HOST, PORT, NODE_ENV } = require('./config/env')
 // APP
 const app = express()
 app.set('view engine', 'ejs')
+const server = http.createServer(app)
 
 // MIDDLEWARE
 const Logger = require('./config/Logger')
@@ -23,20 +25,21 @@ app.use(express.urlencoded({ extended: false }))
 // ROUTES
 const mainRouter = require('./routes/mainRouter')
 const authRouter = require('./routes/authRouter')
+const notFound = require('./middleware/notFound')
+const catchErrors = require('./middleware/catchErrors')
 
 app.use('/', mainRouter)
 app.use('/auth', authRouter)
-app.use('/', (req, res, next) => {
-    res
-        .status(404)
-        .end('404')
-})
-app.use((err, req, res, next) => {
-    console.error(err.message)
-    process.exit(1)
-})
+app.use('/', notFound)
+app.use(catchErrors)
 
 // START SERVER
-app.listen(PORT, HOST, () => {
+
+server.listen(PORT, HOST, () => {
     console.log(`Server is running on http://${HOST}:${PORT}`)
+})
+
+process.on('uncaughtException', err => {
+    console.log(err.message)
+    process.exit(1)
 })
