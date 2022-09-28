@@ -34,8 +34,12 @@ app.use(require('./middleware/catchErrors')) // 500
 
 // START SERVER
 
-server.listen(PORT, HOST, () => {
-    console.log(`Server is running on http://${HOST}:${PORT}`)
+const dbConnection = require('./config/db')
+
+dbConnection.then(() => {
+    server.listen(PORT, HOST, () => {
+        console.log(`Server is running on http://${HOST}:${PORT}`)
+    })
 })
 
 process.on('uncaughtException', err => {
