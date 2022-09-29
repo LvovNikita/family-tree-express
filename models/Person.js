@@ -35,6 +35,10 @@ const personSchema = new mongoose.Schema({
         ref: 'Person'
     },
     children: [mongoose.Schema.Types.ObjectId],
+    userRef: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
     createdAt: {
         type: Date,
         default: Date.now

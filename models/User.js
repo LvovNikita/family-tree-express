@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         match: /\S*/
     },
-    trees: [mongoose.Schema.Types.ObjectId],
+    trees: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tree' }],
     createdAt: {
         type: Date,
         default: Date.now

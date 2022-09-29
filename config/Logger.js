@@ -9,12 +9,12 @@ function loggerFabric (moduleName) {
             ':method': true,
             ':status': true,
             ':url': true,
-            ':req[Cookie]': true,
+            ':req[Cookie]': false,
             ':req[Authorization]': true,
             ':req[WWW-Authenticate]': true
         }
         options = Object.keys(options).reduce((prev, curr) => {
-            return options[curr] ? prev + curr + ' ' : ''
+            return options[curr] ? prev + curr + ' ' : prev
         }, '')
         logger = morgan(options)
     }
