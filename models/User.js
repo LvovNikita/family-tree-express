@@ -61,6 +61,12 @@ Object.assign(userSchema.methods, {
     }
 })
 
+// TODO: move callback to utils
+userSchema.pre('save', function (next) {
+    this.updatedAt = new Date()
+    next()
+})
+
 const User = mongoose.model('User', userSchema)
 
 module.exports = User

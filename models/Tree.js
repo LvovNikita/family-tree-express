@@ -25,6 +25,12 @@ const treeSchema = new mongoose.Schema({
     }
 })
 
+// TODO: move callback to utils
+treeSchema.pre('save', function (next) {
+    this.updatedAt = new Date()
+    next()
+})
+
 const Person = mongoose.model('Tree', treeSchema)
 
 module.exports = Person

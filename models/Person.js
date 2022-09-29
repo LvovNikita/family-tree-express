@@ -55,6 +55,12 @@ personSchema.virtual('age').get(function () {
     return moment(this.dod.toISOString()).diff(moment(this.dob.toISOString()), 'years')
 })
 
+// TODO: move callback to utils
+personSchema.pre('save', function (next) {
+    this.updatedAt = new Date()
+    next()
+})
+
 const Person = mongoose.model('Person', personSchema)
 
 module.exports = Person
