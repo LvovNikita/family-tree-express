@@ -14,7 +14,7 @@ mainRouter.get('/profile', async (req, res, next) => {
     const user = await User.findOne({}).populate('trees') // FIXME: get current user from session
     if (user) {
         return res.render('profile', {
-            title: user.username + ' Profile',
+            title: 'Profile',
             user
         })
     }

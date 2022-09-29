@@ -22,7 +22,8 @@ const treeSchema = new mongoose.Schema({
     updatedAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    persons: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Person' }]
 })
 
 // TODO: move callback to utils

@@ -35,13 +35,13 @@ app.use(require('./middleware/catchErrors')) // 500
 // START SERVER
 
 const dbConnection = require('./config/db')
-const Person = require('./models/Person')
+// const Person = require('./models/Person')
 
 dbConnection.then(() => {
     server.listen(PORT, HOST, () => {
         console.log(`Server is running on http://${HOST}:${PORT}`)
         // Person.create({})
-        Person.findOne({}).then(result => console.log(result.toJSON({ virtuals: true })))
+        // Person.findOne({}).then(result => console.log(result.toJSON({ virtuals: true })))
     })
 })
 

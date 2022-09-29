@@ -25,6 +25,7 @@ const userSchema = new mongoose.Schema({
         match: /\S*/
     },
     trees: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tree' }],
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     createdAt: {
         type: Date,
         default: Date.now

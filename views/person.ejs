@@ -1,0 +1,79 @@
+<h1><%= title %></h1>
+<form action="/person/create" method="post">
+    <section>
+        <input type="text" name="lastname" placeholder="Lastname">
+        <input type="text" name="lastnameAtBirth" placeholder="Lastname At Birth"> 
+        <input type="text" name="firstname" placeholder="Firstname">
+        <input type="text" name="middlename" placeholder="Middlename"> 
+    </section>
+    <section>
+        <label for="gender">Gender</label>
+        <select name="gender">
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+        </select>
+    </section>
+    <section>
+        <label for="dob">Date of birth:</label>
+        <input type="date" name="dob">
+        <label for="dod">Date of death:</label>
+        <input type="date" name="dob">
+    </section>
+    <section>
+        <div>
+            <label for="partner">Partner</label>
+            <select name="partner">
+                <!-- TODO: -->
+            </select>
+        </div>
+        <div>
+            <label for="children">Children</label>
+            <select name="children" multiple>
+                <!-- TODO: -->
+            </select>
+        </div>
+        <div>
+            <label for="userRef">userRef</label>
+            <select name="userRef">
+                <!-- TODO: -->
+            </select>
+        </div>
+    </section>
+    <button>Save</button>
+</form>
+
+<!-- lastname: {
+    type: String,
+    trim: true,
+    match: latinAndCyrillicLetters
+},
+lastnameAtBirth: {
+    type: String,
+    trim: true,
+    match: latinAndCyrillicLetters
+},
+firstname: {
+    type: String,
+    trim: true,
+    match: latinAndCyrillicLetters
+},
+middlename: {
+    type: String,
+    trim: true,
+    match: latinAndCyrillicLetters
+},
+gender: {
+    type: String,
+    enum: ['M', 'F']
+},
+dob: Date,
+dod: Date,
+partner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Person'
+},
+children: [mongoose.Schema.Types.ObjectId],
+userRef: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+}, -->
