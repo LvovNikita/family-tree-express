@@ -1,17 +1,54 @@
 const mongoose = require('mongoose')
+const moment = require('moment')
+
+const latinAndCyrillicLetters = /[A-za-zА-Яа-я]*/
 
 const personSchema = new mongoose.Schema({
-    lastname: String,
-    lastnameAtBirth: String,
-    firstname: String,
-    middlename: String,
+    lastname: {
+        type: String,
+        trim: true,
+        match: latinAndCyrillicLetters
+    },
+    lastnameAtBirth: {
+        type: String,
+        trim: true,
+        match: latinAndCyrillicLetters
+    },
+    firstname: {
+        type: String,
+        trim: true,
+        match: latinAndCyrillicLetters
+    },
+    middlename: {
+        type: String,
+        trim: true,
+        match: latinAndCyrillicLetters
+    },
     gender: {
-        type: String
-        // enum
+        type: String,
+        enum: ['M', 'F']
     },
     dob: Date,
-    partner: mongoose.SchemaTypes.ObjectId,
-    children: [mongoose.SchemaTypes.ObjectId]
+    dod: Date,
+    partner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Person'
+    },
+    children: [mongoose.Schema.Types.ObjectId],
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now
+    }
+})
+
+personSchema.virtual('age').get(function () {
+    if (!this.dob) return 'unknown'
+    if (!this.dod) return moment(new Date()).diff(this.dob.toISOString(), 'years')
+    return moment(this.dod.toISOString()).diff(moment(this.dob.toISOString()), 'years')
 })
 
 const Person = mongoose.model('Person', personSchema)

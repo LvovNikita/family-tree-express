@@ -1,22 +1,38 @@
 const mongoose = require('mongoose')
 
 const AuthResult = require('./AuthResult')
+const { MIN_USER_PASSWORD_LENGTH, MIN_USERNAME_LENGTH } = require('../config/env')
 
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
-        minLength: [2, 'Must be at least two characters long'],
-        maxLength: [20, 'Must be shorter than 20 characters long'],
+        minLength: [
+            MIN_USERNAME_LENGTH,
+            `Must be at least ${MIN_USERNAME_LENGTH} characters long`
+        ],
         unique: true,
-        trim: true
-        // get
-        // set
-        // immutable
-        // transform
+        trim: true,
+        match: /\S*/
     },
-    password: {},
-    trees: [mongoose.SchemaTypes.ObjectId]
+    password: {
+        type: String,
+        minLength: [
+            MIN_USER_PASSWORD_LENGTH,
+            `Must be at least ${MIN_USER_PASSWORD_LENGTH} characters long`
+        ],
+        required: true,
+        match: /\S*/
+    },
+    trees: [mongoose.Schema.Types.ObjectId],
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now
+    }
 })
 
 Object.assign(userSchema.methods, {
