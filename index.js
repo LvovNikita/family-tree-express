@@ -35,10 +35,17 @@ app.use(require('./middleware/catchErrors')) // 500
 // START SERVER
 
 const dbConnection = require('./config/db')
+// const User = require('./models/User')
 
 dbConnection.then(() => {
     server.listen(PORT, HOST, () => {
         console.log(`Server is running on http://${HOST}:${PORT}`)
+        // const newUser = new User({
+        //     username: 'Alice',
+        //     password: 'password'
+        // })
+        // newUser.register().then(console.log)
+        // newUser.login().then(console.log)
     })
 })
 
