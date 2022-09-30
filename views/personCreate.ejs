@@ -43,6 +43,7 @@
     <button>Save</button>
 </form>
 
+<!-- FIXME: use res.locals instead? -->
 <script defer>
     const url = new URLSearchParams(window.location.search)
     document.querySelector('#treeId').value = url.get('tree')

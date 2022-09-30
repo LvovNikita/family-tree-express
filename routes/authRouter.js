@@ -3,7 +3,7 @@
 const { Router } = require('express')
 
 const authController = require('../controllers/authController')
-const wrapper = require('./wrapper')
+const wrapper = require('../middleware/tryCatchWrapper')
 
 const authRouter = new Router()
 

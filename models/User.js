@@ -36,20 +36,9 @@ const userSchema = new mongoose.Schema({
     }
 })
 
+// METHODS
+
 Object.assign(userSchema.methods, {
-    register: async function () {
-        console.log('-----> INSIDE REGISTER METHOD!')
-        const result = await User
-            .findOne({ username: this.username })
-            .then(user => {
-                if (!user) {
-                    this.save()
-                    return new AuthResult(null, this)
-                }
-                return new AuthResult('User already exists', user)
-            })
-        return result
-    },
     login: async function () {
         const result = await User
             .findOne({ username: this.username })
@@ -57,6 +46,26 @@ Object.assign(userSchema.methods, {
                 if (!user) return new AuthResult('User doesn\'t exist', false)
                 if (user.password !== this.password) return new AuthResult('Invalid Credentials', false)
                 return new AuthResult(null, user)
+            })
+        return result
+    }
+})
+
+// STATICS
+
+Object.assign(userSchema.statics, {
+    register: async (username, password) => {
+        const result = await User
+            .findOne({ username: this.username })
+            .then(existingUser => {
+                if (!existingUser) {
+                    const newUser = User.create({
+                        username,
+                        password
+                    })
+                    return new AuthResult(null, newUser)
+                }
+                return new AuthResult('User already exists', existingUser)
             })
         return result
     }

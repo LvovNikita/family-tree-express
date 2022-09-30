@@ -29,21 +29,18 @@ if (NODE_ENV === 'development') {
 
 // ROUTES
 app.use(require('./routes'))
-app.use('/', require('./middleware/notFound')) // 404
-app.use(require('./middleware/catchErrors')) // 500
 
 // START SERVER
 
 const dbConnection = require('./config/db')
-// const Person = require('./models/Person')
 
 dbConnection.then(() => {
     server.listen(PORT, HOST, () => {
         console.log(`Server is running on http://${HOST}:${PORT}`)
-        // Person.create({})
-        // Person.findOne({}).then(result => console.log(result.toJSON({ virtuals: true })))
     })
 })
+
+// UNHANDLED EXCEPTIONS
 
 process.on('uncaughtException', err => {
     console.log(err.message)

@@ -1,6 +1,6 @@
 'use strict'
 
-const { register } = require('../auth/auth')
+const User = require('../models/User')
 
 const { MIN_USER_PASSWORD_LENGTH, MIN_USERNAME_LENGTH } = require('../config/env')
 
@@ -16,13 +16,12 @@ const authController = {
             })
     },
     postRegisterCredentials: (req, res, next) => {
-        console.log('-----> INSIDE POST CREDENTIALS')
         if (!req.body.username || !req.body.password) {
             return res
                 .status(422)
                 .json({ error: 'Please provide username and password' })
         }
-        register(req.body.username, req.body.password).then(console.log)
+        User.register(req.body.username, req.body.password)
         res.redirect('/auth/login')
     },
     getLoginPage: (req, res, next) => {

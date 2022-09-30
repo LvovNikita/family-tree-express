@@ -38,6 +38,4 @@ function loggerFabric (moduleName) {
     return logger
 }
 
-// let logger = (req, res, next) => { return next() }
-
 module.exports = loggerFabric

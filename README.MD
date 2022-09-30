@@ -1,17 +1,26 @@
-# Зависимости
+# Редактор генеалогических деревьев (в разработке)
 
-Установить зависимости:
+## Требования
+
+Протестировано на:
+
+* NodeJS v16.15.1
+* MongoDB v4.4.14
+
+## Зависимости
+
+Установка зависимостей:
 
 ```
-npm run dev
+npm install
 ```
-
-Протестировано на Node v16.15.1
 
 dependencies:
 * ejs
 * express
 * express-ejs-layouts
+* moment
+* mongoose
 * swagger-ui-express
 
 devDependencies:
@@ -19,7 +28,7 @@ devDependencies:
 * morgan
 * nodemon
 
-# Переменные среды
+# Переменные окружения
 
 Добавить переменные:
 * HOST
@@ -34,7 +43,13 @@ devDependencies:
 
 * Настроить логирование в режиме разработки в файле ./config/Logger.js
 
-# Запустить
+# Сущности
+
+* User — пользователь
+* Tree — генеалогическое древо
+* Person — листья древа
+
+# Запуск
 
 В режиме разработки:
 
@@ -47,3 +62,12 @@ npm run dev
 SwaggerUI в режиме разработки:
 * /api/docs
 
+# TODO:
+
+3. Обернуть wrapper'ом
+4. views/person -> views/personCreate
+5. Модели
+    * User
+        * User.js
+        * User.methods.js
+        * USer.statucs.js
