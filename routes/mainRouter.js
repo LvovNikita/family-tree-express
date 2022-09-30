@@ -10,6 +10,7 @@ const wrapper = require('./wrapper.js')
 const mainRouter = new Router()
 
 mainRouter.get('/', wrapper(mainController.getIndexPage))
+
 mainRouter.get('/profile', async (req, res, next) => {
     const user = await User.findOne({}).populate('trees') // FIXME: get current user from session
     if (user) {

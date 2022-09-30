@@ -33,7 +33,7 @@ treeRouter.post('/remove/:id', async (req, res, next) => {
 })
 
 treeRouter.get('/:id', async (req, res, next) => {
-    const tree = await Tree.findById(req.params.id)
+    const tree = await Tree.findById(req.params.id).populate('persons')
     res.render('tree', {
         title: tree.title,
         tree

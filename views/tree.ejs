@@ -1,6 +1,19 @@
 <h1><%= title %></h1>
+<h2>Persons</h2>
 
-<a href="/person/create">Create Person</a>
+<!-- TODO: make component -->
+<ul>
+    <% for (person of tree.persons) { %>
+        <li>
+            <form action="/person/remove/<%= person.id %>" method="POST">
+                <a href="/tree/<%= person.id %>"><%= person %></a>
+                <button>Remove</button>
+            </form>
+        </li>
+    <% } %>
+</ul>
+
+<a href="/person/create?tree=<%= tree.id %> ">Create Person</a>
 
 <hr>
 <h3>Debug Info</h3>

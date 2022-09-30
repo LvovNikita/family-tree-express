@@ -1,5 +1,6 @@
 <h1><%= title %></h1>
 <form action="/person/create" method="post">
+    <input type="text" id="treeId" name="treeId" hidden>
     <section>
         <input type="text" name="lastname" placeholder="Lastname">
         <input type="text" name="lastnameAtBirth" placeholder="Lastname At Birth"> 
@@ -42,38 +43,7 @@
     <button>Save</button>
 </form>
 
-<!-- lastname: {
-    type: String,
-    trim: true,
-    match: latinAndCyrillicLetters
-},
-lastnameAtBirth: {
-    type: String,
-    trim: true,
-    match: latinAndCyrillicLetters
-},
-firstname: {
-    type: String,
-    trim: true,
-    match: latinAndCyrillicLetters
-},
-middlename: {
-    type: String,
-    trim: true,
-    match: latinAndCyrillicLetters
-},
-gender: {
-    type: String,
-    enum: ['M', 'F']
-},
-dob: Date,
-dod: Date,
-partner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Person'
-},
-children: [mongoose.Schema.Types.ObjectId],
-userRef: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-}, -->
+<script defer>
+    const url = new URLSearchParams(window.location.search)
+    document.querySelector('#treeId').value = url.get('tree')
+</script>
