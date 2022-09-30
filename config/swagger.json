@@ -102,6 +102,56 @@
                     }
                 }
             }
+        },
+        "/auth/login": {
+            "get": {
+                "summary": "Returns login page"
+            },
+            "post": {}
+        },
+        "/auth/logout": {
+            "get": {}
+        },
+        "/person/create": {
+            "get": {
+                "summary": "Returns person create page"
+            },
+            "post": {}
+        },
+        "/person/:id": {
+            "get": {
+                "summary": "Returns person page"
+            }
+        },
+        "/person/remove/:id": {
+            "delete": {
+                "summary": "Removes person"
+            }
+        },
+        "/tree/create": {
+            "post": {
+                "summary": "Creates family tree"
+            }
+        },
+        "/tree/:id": {
+            "get": {
+                "summary": "Returns family tree page"
+            }
+        },
+        "/tree/remove/:id": {
+            "delete": {
+                "summary": "Removes family tree"
+            }
+        },
+        "/user/profile": {
+            "get": {
+                "summary": "Returns current user profile page"
+            }
+        },
+        "/user/:id": {
+            "get": {
+                "summary": "Returnsuser profile page by id"
+            }
         }
     },
     "components": {

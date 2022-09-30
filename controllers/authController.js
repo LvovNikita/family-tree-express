@@ -1,8 +1,7 @@
 'use strict'
 
-const User = require('../models/User')
-
 const { MIN_USER_PASSWORD_LENGTH, MIN_USERNAME_LENGTH } = require('../config/env')
+const User = require('../models/User')
 
 const authController = {
     getRegisterPage: (req, res, next) => {

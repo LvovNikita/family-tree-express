@@ -61,13 +61,3 @@ npm run dev
 
 SwaggerUI в режиме разработки:
 * /api/docs
-
-# TODO:
-
-3. Обернуть wrapper'ом
-4. views/person -> views/personCreate
-5. Модели
-    * User
-        * User.js
-        * User.methods.js
-        * USer.statucs.js

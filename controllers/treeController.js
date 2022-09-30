@@ -1,7 +1,9 @@
-const Tree = require('../models/Tree')
-const User = require('../models/User')
+'use strict'
 
 const { ObjectId } = require('mongoose').Types
+
+const Tree = require('../models/Tree')
+const User = require('../models/User')
 
 const treeController = {
     postCreateTree: async (req, res, next) => {

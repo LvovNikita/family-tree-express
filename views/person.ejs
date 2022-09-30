@@ -1,0 +1,33 @@
+<h1><%= person.lastname %> <%= person.firstname %></h1>
+<section>
+    <%= person.id %> 
+</section>
+<section>
+    <%= person.lastname %> (<%= person.lastnameAtBirth %>) <!-- TODO: if lastnameAtBirth exists  -->
+    <%= person.firstname %>
+    <%= person.middlename %>
+    <%= person.gender %>
+</section>
+<section>
+    Date of birth: <%= person.dob %>
+    Date of death: <%= person.dod %>
+</section>
+<section>
+    Partner: <%= person.partner %>
+</section>
+<section>
+    <a href="#">Profile</a> <!-- TODO: get user profile by id -->
+</section>
+<section>
+    Created At: <%= person.createdAt %> 
+    Updated At: <%= person.updatedAt %> 
+</section>
+
+<!-- TODO: add info about children -->
+<!-- 
+    children: [mongoose.Schema.Types.ObjectId],
+    userRef: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
+}) -->

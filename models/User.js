@@ -1,7 +1,9 @@
+'use strict'
+
 const mongoose = require('mongoose')
 
-const AuthResult = require('./AuthResult')
 const { MIN_USER_PASSWORD_LENGTH, MIN_USERNAME_LENGTH } = require('../config/env')
+const AuthResult = require('./AuthResult')
 
 const userSchema = new mongoose.Schema({
     username: {

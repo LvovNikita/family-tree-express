@@ -1,3 +1,5 @@
+'use strict'
+
 const url = require('node:url')
 const querystring = require('node:querystring')
 
@@ -26,8 +28,12 @@ const personController = {
         await Person.deleteOne({ id: req.body.id }) // TODO: catch
         return res.redirect('/user/profile')
     },
-    getPersonById: (req, res, next) => {
-        res.send(`Person ${req.params.id}`)
+    getPersonById: async (req, res, next) => {
+        const person = await Person.findOne({ id: req.params.id }) // TODO: catch
+        res.render('person', {
+            title: 'Person',
+            person
+        })
     }
 }
 

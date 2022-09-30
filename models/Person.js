@@ -1,5 +1,7 @@
-const mongoose = require('mongoose')
+'use strict'
+
 const moment = require('moment')
+const mongoose = require('mongoose')
 
 const latinAndCyrillicLetters = /[A-za-zА-Яа-я]*/
 
