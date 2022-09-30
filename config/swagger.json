@@ -28,8 +28,7 @@
                         "content": {
                             "html/text": {
                                 "schema": {
-                                    "type": "string",
-                                    "example": "<html>...<h1>Index Page</h1>...</html>"
+                                    "type": "string"
                                 }
                             }
                         }
@@ -88,9 +87,6 @@
                     "302": {
                         "description": "FOUND: Redirect to /auth/login"
                     },
-                    "304": {
-                        "description": "NOT MODIFIED: Redirect back (refresh page)"
-                    },
                     "400": {
                         "description": "BAD REQUEST: Username/password validation error"
                     },
@@ -105,12 +101,78 @@
         },
         "/auth/login": {
             "get": {
-                "summary": "Returns login page"
+                "summary": "Returns login page",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK: Returns EJS login template",
+                        "content": {
+                            "html/text": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
             },
-            "post": {}
+            "post": {
+                "summary": "Login user",
+                "description": "Login and redirect to index page or try again",
+                "requestBody": {
+                    "description": "Credentials from login form fields: username, password",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserCredentials"
+                            },
+                            "examples": {
+                                "User": {
+                                    "$ref": "#/components/examples/UserCredentialsExample"
+                                },
+                                "Admin": {
+                                    "$ref": "#/components/examples/AdminCredentialsExample"
+                                }
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserCredentials"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "302": {
+                        "description": "FOUND: Redirect to user profile"
+                    },
+                    "401": {
+                        "description": "UNAUTHORIZED: Wrong credentials"
+                    },
+                    "422": {
+                        "description": "UNPROCESSABLE ENTITY: Empty username/password"
+                    }
+                }
+            }
         },
         "/auth/logout": {
-            "get": {}
+            "get": {
+                "summary": "Logout user",
+                "description": "Logout user (destroy session) and redirect to index page",
+                "responses": {
+                    "200": {
+                        "description": "OK: Returns EJS index template",
+                        "content": {
+                            "html/text": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         },
         "/person/create": {
             "get": {

@@ -34,11 +34,12 @@ const authController = {
             })
     },
     postLoginCredentials: (req, res, next) => {
-        res.redirect('/')
+        res
+            .redirect('/') // TODO:
     },
     logout: (req, res, next) => {
         res
-            .redirect('/')
+            .redirect('/') // TODO:
     }
 }
 
