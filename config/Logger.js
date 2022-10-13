@@ -29,7 +29,7 @@ function loggerFabric (moduleName) {
     if (moduleName === 'session') {
         logger = (req, res, next) => {
             if (req.session) {
-                console.log('Session:\n' + req.session)
+                console.log(req.session)
             }
             next()
         }

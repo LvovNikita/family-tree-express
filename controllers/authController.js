@@ -33,11 +33,31 @@ const authController = {
                 usernameLength: MIN_USERNAME_LENGTH
             })
     },
-    postLoginCredentials: (req, res, next) => {
-        res
-            .redirect('/') // TODO:
+    postLoginCredentials: async (req, res, next) => {
+        if (!req.body.username || !req.body.password) {
+            return res
+                .status(422)
+                .json({ error: 'Please provide username and password' })
+        }
+        const { username, password } = req.body
+        const authResult = await User.login(username, password)
+        if (authResult.err) {
+            return res
+                .status(500)
+                .json({ error: authResult.err })
+        }
+        if (!authResult.user) {
+            return res
+                .status(401)
+                .json({ error: 'Invalid credentials' })
+        }
+        req.session.user = { _id: authResult.user.id }
+        return res
+            .status(302)
+            .redirect('/user/profile') // TODO: redirect to user profile
     },
     logout: (req, res, next) => {
+        req.session.destroy()
         res
             .redirect('/') // TODO:
     }

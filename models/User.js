@@ -41,16 +41,7 @@ const userSchema = new mongoose.Schema({
 // METHODS
 
 Object.assign(userSchema.methods, {
-    login: async function () {
-        const result = await User
-            .findOne({ username: this.username })
-            .then(user => {
-                if (!user) return new AuthResult('User doesn\'t exist', false)
-                if (user.password !== this.password) return new AuthResult('Invalid Credentials', false)
-                return new AuthResult(null, user)
-            })
-        return result
-    }
+
 })
 
 // STATICS
@@ -68,6 +59,19 @@ Object.assign(userSchema.statics, {
                     return new AuthResult(null, newUser)
                 }
                 return new AuthResult('User already exists', existingUser)
+            })
+        return result
+    },
+    login: async function (username, password) {
+        const result = await User
+            .findOne({ username })
+            .then(user => {
+                if (!user) return new AuthResult('User doesn\'t exist', false)
+                if (user.password !== password) return new AuthResult('Invalid Credentials', false)
+                return new AuthResult(null, user)
+            })
+            .catch(err => {
+                return new AuthResult(err.message, false)
             })
         return result
     }

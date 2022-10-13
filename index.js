@@ -2,6 +2,7 @@
 
 const http = require('node:http')
 const express = require('express')
+const session = require('express-session')
 const ejsLayouts = require('express-ejs-layouts')
 const swaggerUi = require('swagger-ui-express')
 
@@ -16,6 +17,7 @@ const server = http.createServer(app)
 app.set('view engine', 'ejs')
 
 // MIDDLEWARE
+app.use(session(require('./config/session.js')))
 app.use(ejsLayouts)
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())

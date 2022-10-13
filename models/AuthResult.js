@@ -8,3 +8,7 @@ class AuthResult {
 }
 
 module.exports = AuthResult
+
+// null, user = no error, valid credentials
+// null, false = no error, invalid credentials
+// err = error
