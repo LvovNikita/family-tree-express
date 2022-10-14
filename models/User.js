@@ -24,7 +24,8 @@ const userSchema = new mongoose.Schema({
             `Must be at least ${MIN_USER_PASSWORD_LENGTH} characters long`
         ],
         required: true,
-        match: /\S*/
+        match: /\S*/,
+        select: false
     },
     trees: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tree' }],
     friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
@@ -65,6 +66,7 @@ Object.assign(userSchema.statics, {
     login: async function (username, password) {
         const result = await User
             .findOne({ username })
+            .select('+password')
             .then(user => {
                 if (!user) return new AuthResult('User doesn\'t exist', false)
                 if (user.password !== password) return new AuthResult('Invalid Credentials', false)

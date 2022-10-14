@@ -7,7 +7,7 @@ const User = require('../models/User')
 
 const treeController = {
     postCreateTree: async (req, res, next) => {
-        const currentUser = await User.findOne({}) // FIXME: get current user from session
+        const currentUser = await User.findOne({ _id: req.session.user._id })
         const newTree = await Tree.create({
             owner: currentUser.id,
             title: req.body.title || 'New Family Tree'
@@ -17,7 +17,8 @@ const treeController = {
         return res.redirect('/user/profile')
     },
     postRemoveTree: async (req, res, next) => {
-        await User.updateOne({}, {
+        const currentUser = await User.findOne({ _id: req.session.user._id })
+        await User.updateOne({ _id: currentUser.id }, {
             $pull: {
                 trees: new ObjectId(req.params.id)
             }

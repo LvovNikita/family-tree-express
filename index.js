@@ -30,6 +30,10 @@ if (NODE_ENV === 'development') {
 }
 
 // ROUTES
+app.use((req, res, next) => {
+    res.locals.isLoggedIn = !!req.session.user
+    next()
+})
 app.use(require('./routes'))
 
 // START SERVER

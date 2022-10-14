@@ -4,7 +4,9 @@ const mainController = {
     getIndexPage: (req, res, next) => {
         res
             .status(200)
-            .render('index', { title: 'FamilyTree' })
+            .render('index', {
+                title: 'FamilyTree'
+            })
     }
 }
 

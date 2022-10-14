@@ -5,20 +5,19 @@ const querystring = require('node:querystring')
 
 const Person = require('../models/Person')
 const Tree = require('../models/Tree')
+// const User = require('../models/User')
 
 const personController = {
     getCreatePersonPage: (req, res, next) => {
         res.render('personCreate', { title: 'Person' })
     },
     postCreatePerson: async (req, res, next) => {
+        // const currentUser = await User.findOne({ _id: req.session.user._id })
         const newPerson = await Person.create({
             firstname: req.body.firstname,
             lastname: req.body.lastname
         }) // TODO: catch TODO: other fields
-        const urlObj = url.parse(req.url)
-        const queryObj = querystring.parse(urlObj.query)
-        console.log(queryObj)
-        const currentTree = await Tree.findOne({ id: req.body.treeId }) // TODO: catch
+        const currentTree = await Tree.findOne({ id: req.body.tree }) // TODO: catch
         // TODO: does user have an access to tree?
         currentTree.persons.push(newPerson._id)
         await currentTree.save()
