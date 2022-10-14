@@ -4,6 +4,7 @@ const morgan = require('morgan')
 
 function loggerFabric (moduleName) {
     let logger
+
     if (moduleName === 'morgan') {
         let options = {
             ':method': true,
@@ -18,6 +19,7 @@ function loggerFabric (moduleName) {
         }, '')
         logger = morgan(options)
     }
+
     if (moduleName === 'body') {
         logger = (req, res, next) => {
             if (req.method === 'POST') {
@@ -26,6 +28,7 @@ function loggerFabric (moduleName) {
             next()
         }
     }
+
     if (moduleName === 'session') {
         logger = (req, res, next) => {
             if (req.session) {
@@ -34,7 +37,11 @@ function loggerFabric (moduleName) {
             next()
         }
     }
-    if (!logger) throw new ReferenceError('Please provide logging module name: morgan, body or session')
+
+    if (!logger) {
+        throw new ReferenceError('Please provide logging module name: morgan, body or session')
+    }
+
     return logger
 }
 

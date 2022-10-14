@@ -41,28 +41,24 @@ const userSchema = new mongoose.Schema({
 
 // METHODS
 
-Object.assign(userSchema.methods, {
-
-})
+Object.assign(userSchema.methods, {})
 
 // STATICS
 
 Object.assign(userSchema.statics, {
+
     register: async (username, password) => {
-        const result = await User
-            .findOne({ username: this.username })
-            .then(existingUser => {
-                if (!existingUser) {
-                    const newUser = User.create({
-                        username,
-                        password
-                    })
-                    return new AuthResult(null, newUser)
-                }
-                return new AuthResult('User already exists', existingUser)
-            })
-        return result
+        const existingUser = await User.findOne({ username })
+        if (existingUser) {
+            return new AuthResult('User already exists', existingUser)
+        }
+        const newUser = await User.create({ username, password })
+        if (!newUser) {
+            return new AuthResult('Creation or validation error', null)
+        }
+        return new AuthResult(null, newUser)
     },
+
     login: async function (username, password) {
         const result = await User
             .findOne({ username })
@@ -77,10 +73,13 @@ Object.assign(userSchema.statics, {
             })
         return result
     }
+
 })
 
-// TODO: move callback to utils
+// HOOKS
+
 userSchema.pre('save', function (next) {
+    // TODO: add password hashing
     this.updatedAt = new Date()
     next()
 })

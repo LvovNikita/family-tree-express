@@ -6,6 +6,6 @@ module.exports = (err, req, res, next) => {
         .status(500)
         .render('error', {
             statusCode: 500,
-            errorMessage: 'Internal Server Error'
+            errorMessage: 'Internal Server Error: ' + err.message
         })
 }

@@ -1,2 +1,6 @@
 <h1><%= title %></h1>
-<%- include('partials/authForm') %>
+<% if (locals.isLoggedIn) { %>
+    <p>You are already logged in!</p>
+<% } else { %>
+    <%- include('partials/authForm') %>
+<% } %> 
