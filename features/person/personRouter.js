@@ -2,8 +2,8 @@
 
 const { Router } = require('express')
 
-const personController = require('../controllers/personController')
-const tryCatchWrapper = require('../middleware/tryCatchWrapper')
+const personController = require('./personController')
+const tryCatchWrapper = require('../../utils/tryCatchWrapper')
 
 const personRouter = new Router()
 

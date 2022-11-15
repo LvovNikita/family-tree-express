@@ -1,8 +1,10 @@
+const session = require('express-session')
+
 const { SESSION_SECRET, MONGO_URL } = require('./env')
 
 const MongoStore = require('connect-mongo')
 
-module.exports = {
+module.exports = session({
     secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
@@ -15,4 +17,4 @@ module.exports = {
         autoRemove: 'interval',
         autoRemoveInterval: 60 * 24 // minutes
     })
-}
+})

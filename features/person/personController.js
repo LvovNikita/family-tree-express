@@ -1,7 +1,7 @@
 'use strict'
 
-const Person = require('../models/Person')
-const Tree = require('../models/Tree')
+const Person = require('./Person')
+const Tree = require('../tree/Tree')
 // const User = require('../models/User')
 
 const personController = {

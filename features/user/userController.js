@@ -1,6 +1,6 @@
 'use strict'
 
-const User = require('../models/User')
+const User = require('./User')
 
 const userController = {
     getProfilePage: async (req, res, next) => {

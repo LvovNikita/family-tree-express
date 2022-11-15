@@ -1,54 +1,27 @@
 'use strict'
 
-const http = require('node:http')
-const express = require('express')
-const session = require('express-session')
-const ejsLayouts = require('express-ejs-layouts')
-const swaggerUi = require('swagger-ui-express')
+const makeApp = require('./server')
+const session = require('./config/session')
+const database = require('./config/db')
+const router = require('./router')
+const logger = require('./config/logger')
 
-const Logger = require('./config/Logger')
+// const { HOST, PORT } = require('./config/env')
 
-// ENVIRONMENT VARIABLES
-const { HOST, PORT, NODE_ENV } = require('./config/env')
+const app = makeApp(session, router, logger);
 
-// APP
-const app = express()
-const server = http.createServer(app)
-app.set('view engine', 'ejs')
+(async () => {
+    // CONNECT TO DB
+    await database.connect()
 
-// MIDDLEWARE
-app.use(session(require('./config/session.js')))
-app.use(ejsLayouts)
-app.use(express.urlencoded({ extended: false }))
-app.use(express.json())
-
-if (NODE_ENV === 'development') {
-    app.use(Logger('morgan'))
-    app.use(Logger('body'))
-    app.use(Logger('session'))
-    app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(require('./config/swagger.json')))
-}
-
-// ROUTES
-app.use((req, res, next) => {
-    res.locals.isLoggedIn = !!req.session.user
-    next()
-})
-app.use(require('./routes'))
-
-// START SERVER
-
-const dbConnection = require('./config/db')
-
-dbConnection.then(() => {
-    server.listen(PORT, HOST, () => {
-        console.log(`Server is running on http://${HOST}:${PORT}`)
+    // SERVER LISTEN
+    app.listen(3000, () => {
+        console.log('Server is running on http://') // FIXME:
     })
-})
 
-// UNHANDLED EXCEPTIONS
-
-process.on('uncaughtException', err => {
-    console.log(err.message)
-    process.exit(1)
-})
+    // UNCAUGHT EXCEPTIONS
+    process.on('uncaughtException', err => {
+        console.log(err.message)
+        process.exit(1)
+    })
+})()
