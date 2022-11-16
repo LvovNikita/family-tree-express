@@ -1,7 +1,6 @@
 'use strict'
 
 const User = require('../user/User')
-const { generatePassword } = require('../../utils/password')
 
 
 exports.getRegisterPage = async (req, res, next) => {
@@ -23,7 +22,7 @@ exports.postRegisterCredentials = async (req, res, next) => {
 
     if (!username && !password) {
         return res
-            .status(422)
+            .status(400)
             .json({ error: 'Please provide username and password' }) // TODO: flash error instead
     }
 
@@ -49,9 +48,7 @@ exports.postRegisterCredentials = async (req, res, next) => {
     }
 
     try {
-        const { hash, salt } = await generatePassword(password)
-        const newUser = new User({ username, password: hash, salt })
-        await newUser.save()
+        User.register(username, password)
     } catch (err) {
         return next(err)
     }
@@ -73,32 +70,16 @@ exports.getLoginPage = async (req, res, next) => {
 
 
 exports.postLoginCredentials = async (req, res, next) => {
-    // if (!req.body.username || !req.body.password) {
-    //     return res
-    //         .status(422)
-    //         .json({ error: 'Please provide username and password' })
-    // }
-    // const { username, password } = req.body
-    // const authResult = await User.login(username, password)
-    // if (authResult.err) { // TODO: use next instead?
-    //     return res
-    //         .status(500)
-    //         .json({ error: authResult.err })
-    // }
-    // if (!authResult.user) {
-    //     return res
-    //         .status(401)
-    //         .json({ error: 'This user doesn\'t exists' })
-    // }
-    // req.session.user = { _id: authResult.user.id }
-    // return res
-    //     .status(302)
-    //     .redirect('/user/profile') // TODO: redirect to user profile
+    // processed by passportjs
+    next()
 }
 
 exports.logout = async (req, res, next) => {
-    // req.session.destroy()
-    // res
-    //     .status(200)
-    //     .redirect('/auth/login')
+    // passportjs method = clear req.user and destroy session
+    req.logout(err => {
+        if (err) throw new Error() // FIXME: handle error !!!
+        res
+            .status(200)
+            .redirect('/auth/login')
+    })
 }

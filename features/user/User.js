@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose')
 
-const { validatePassword } = require('../../utils/password')
+const { generatePassword, validatePassword } = require('../../utils/password')
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -16,21 +16,28 @@ const userSchema = new mongoose.Schema({
         trim: true,
         match: /\S*/
     },
-    password: {
-        type: String
+    passwordHash: {
+        type: String,
+        required: true
         // minLength: [
         //     MIN_USER_PASSWORD_LENGTH,
         //     `Must be at least ${MIN_USER_PASSWORD_LENGTH} characters long`
         // ],
-        // required: true,
         // match: /\S*/,
         // select: false
     },
     salt: {
-        type: String
+        type: String,
+        required: true
     },
-    trees: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tree' }],
-    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    trees: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Tree'
+    }],
+    friends: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     createdAt: {
         type: Date,
         default: Date.now
@@ -44,27 +51,21 @@ const userSchema = new mongoose.Schema({
 // METHODS
 
 Object.assign(userSchema.methods, {
-    validatePassword: async (password) => {
-        const isValid = await validatePassword(password, this.hash, this.salt)
+    validatePassword: async function (password) {
+        const isValid = await validatePassword(password, this.passwordHash, this.salt)
         return isValid
     }
 })
 
 // // STATICS
 
-// Object.assign(userSchema.statics, {
-
-//     register: async (username, password) => {
-//         const existingUser = await User.findOne({ username })
-//         if (existingUser) {
-//             return new AuthResult('User already exists', existingUser)
-//         }
-//         const newUser = await User.create({ username, password })
-//         if (!newUser) {
-//             return new AuthResult('Creation or validation error', null)
-//         }
-//         return new AuthResult(null, newUser)
-//     },
+Object.assign(userSchema.statics, {
+    register: async (username, password) => {
+        const { hash, salt } = await generatePassword(password)
+        const newUser = new User({ username, passwordHash: hash, salt })
+        await newUser.save()
+    }
+})
 
 //     login: async function (username, password) {
 //         const result = await User
@@ -81,15 +82,14 @@ Object.assign(userSchema.methods, {
 //         return result
 //     }
 
-// })
+
 
 // // HOOKS
 
-// userSchema.pre('save', function (next) {
-//     // TODO: add password hashing
-//     this.updatedAt = new Date()
-//     next()
-// })
+userSchema.pre('save', function (next) {
+    this.updatedAt = new Date()
+    next()
+})
 
 const User = mongoose.model('User', userSchema)
 

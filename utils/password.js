@@ -22,7 +22,8 @@ function validatePassword (password, hashFromDb, saltFromDb) {
             if (err) {
                 return reject(new Error('Password validation error'))
             }
-            resolve(hash === hashFromDb)
+            console.log({ password, hashFromDb, saltFromDb, hash: hash.toString('hex') })
+            return resolve(hash.toString('hex') === hashFromDb)
         })
     })
 }

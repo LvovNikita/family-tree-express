@@ -4,7 +4,15 @@ const makeServer = require('../server')
 const router = require('../router')
 const session = require('../config/session')
 
+// TODO: mock session & passport.authenticate
+// TODO: mock database or User model
+
+// jest.mock('../config/session', () => {
+//     return (req, res, next) => { next() }
+// })
+
 const app = makeServer(session, router, null)
+
 
 describe('GET /auth/register', () => {
     test('should respond with a statusCode 200', async () => {
@@ -17,5 +25,32 @@ describe('GET /auth/register', () => {
         await supertest(app)
             .get('/auth/register')
             .expect('Content-Type', /html/)
+    })
+})
+
+
+describe('POST /auth/register', () => {
+    test('should respond with a statusCode 400 if credentials was not provided', async () => {
+        await supertest(app)
+            .post('/auth/register')
+            .send({})
+            .expect(400)
+            .expect('Content-Type', /json/) // FIXME:
+    })
+
+    test('should respond with a statusCode 400 if the username was not provided', async () => {
+        await supertest(app)
+            .post('/auth/register')
+            .send({ password: 'password' })
+            .expect(400)
+            .expect('Content-Type', /json/) // FIXME:
+    })
+
+    test('should respond with a statusCode 400 if the password was not provided', async () => {
+        await supertest(app)
+            .post('/auth/register')
+            .send({ username: 'user' })
+            .expect(400)
+            .expect('Content-Type', /json/) // FIXME:
     })
 })

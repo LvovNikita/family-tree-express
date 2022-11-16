@@ -7,7 +7,7 @@ const verifyCb = async (username, password, done) => {
     try {
         const user = await User.findOne({ username })
         if (!user) return done(null, false)
-        const isPasswordValid = User.validatePassword(password)
+        const isPasswordValid = await user.validatePassword(password)
         if (isPasswordValid) return done(null, user)
         return done(null, false)
     } catch (err) {

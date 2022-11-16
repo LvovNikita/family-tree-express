@@ -4,15 +4,15 @@ const morgan = require('morgan')
 
 const logger = morgan(`
     :method 
-    :url 
+    :url
+    :body
     :status
     :response-time ms
-    :req[body] 
     :req[Cookie]
-    :res[Set-Cookie]
-    :req[session]
-    :req[Authorization]
-    :req[WWW-Authenticate]        
+    :session 
 `)
+
+morgan.token('body', req => JSON.stringify(req.body))
+morgan.token('session', req => JSON.stringify(req.session))
 
 module.exports = logger

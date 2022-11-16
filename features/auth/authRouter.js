@@ -1,8 +1,10 @@
 'use strict'
 
+const passport = require('passport')
+
 const { Router } = require('express')
 
-const { getLoginPage, getRegisterPage, postLoginCredentials, postRegisterCredentials } = require('./authController')
+const { getLoginPage, getRegisterPage, postRegisterCredentials, postLoginCredentials, logout } = require('./authController')
 
 const authRouter = new Router()
 
@@ -12,9 +14,15 @@ authRouter.route('/register')
 
 authRouter.route('/login')
     .get(getLoginPage)
-    .post(postLoginCredentials)
+    .post(
+        passport.authenticate('local', {
+            failWithError: true, // FIXME:
+            successRedirect: '/user/profile'
+        }),
+        postLoginCredentials
+    )
 
-// authRouter.route('/logout')
-//     .get(authController.logout)
+authRouter.route('/logout')
+    .get(logout)
 
 module.exports = authRouter
