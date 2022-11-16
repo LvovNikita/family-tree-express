@@ -8,7 +8,7 @@ const router = new Router()
 router.get('/', getIndexPage)
 
 router.use('/auth', require('./features/auth/authRouter'))
-// router.use('/tree', require('./features/tree/treeRouter'))
+router.use('/tree', require('./features/tree/treeRouter'))
 // router.use('/person', require('./features/person/personRouter'))
 router.use('/user', require('./features/user/userRouter'))
 

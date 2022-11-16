@@ -7,9 +7,11 @@ const userController = {
     getProfilePage: async (req, res, next) => {
         if (req.isAuthenticated()) {
             try {
+                const currentUserId = req.session.passport.user
+
                 const user = await User
                     // FIXME: make method
-                    .findById(req.session.passport.user)
+                    .findById(currentUserId)
                     .select({
                         passwordHash: 0,
                         salt: 0

@@ -2,13 +2,17 @@
 
 const { Router } = require('express')
 
-const treeController = require('./treeController')
-const tryCatchWrapper = require('../../utils/tryCatchWrapper')
+const { getTreePage, postCreateTree, postRemoveTree } = require('./treeController')
 
 const treeRouter = new Router()
 
-treeRouter.post('/create', tryCatchWrapper(treeController.postCreateTree))
-treeRouter.get('/:id', tryCatchWrapper(treeController.getTreeById))
-treeRouter.post('/remove/:id', tryCatchWrapper(treeController.postRemoveTree))
+treeRouter
+    .get('/:id', getTreePage)
+
+treeRouter
+    .post('/create', postCreateTree)
+
+treeRouter
+    .post('/:id/remove', postRemoveTree)
 
 module.exports = treeRouter
