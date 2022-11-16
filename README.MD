@@ -1,12 +1,5 @@
 # Редактор генеалогических деревьев (в разработке)
 
-## Требования
-
-Протестировано на:
-
-* NodeJS v16.15.1
-* MongoDB v4.4.14
-
 ## Зависимости
 
 Установка зависимостей:
@@ -15,39 +8,27 @@
 npm install
 ```
 
-dependencies:
-* ejs
-* express
-* express-ejs-layouts
-* moment
-* mongoose
-* swagger-ui-express
-
-devDependencies:
-* eslint
-* morgan
-* nodemon
-
 # Переменные окружения
 
-Добавить переменные:
-* HOST
-* PORT
-* MIN_USER_PASSWORD_LENGTH
-* MIN_USERNAME_LENGTH
-* NODE_ENV ('development' | 'production')
+Добавить переменные окружения в файле /config/env.js:
 
-Или изменить значения в файле ./config/env.js
+| Переменная     | Описание                    | Значение по умолчанию                 |
+|----------------|-----------------------------|---------------------------------------|
+| PORT           | Порт                        | 3000                                  |
+| HOST           | Хост                        | 127.0.0.1                             |
+| NODE_ENV       | Режим работы                | development                           |
+| SESSION_SECRET | Сеансовый ключ              | SECRET                                |
+| MONGO_URL      | Адрес подключения к MongoDB | mongodb://127.0.0.1:27017/family-tree |
 
 # Конфигурирование
 
-* Настроить логирование в режиме разработки в файле ./config/Logger.js
+* Настроить логирование morgan в режиме разработки в файле ./config/Logger.js (добавить или удалить токен)
 
 # Сущности
 
 * User — пользователь
 * Tree — генеалогическое древо
-* Person — листья древа
+* Person — персоналии (листья древа)
 
 # Запуск
 
@@ -59,5 +40,10 @@ npm run dev
 
 # Тестирование
 
-SwaggerUI в режиме разработки:
-* /api/docs
+```
+npm test
+```
+
+# Справка по API
+
+SwaggerUI в режиме разработки: /api/docs

@@ -8,9 +8,11 @@ const { getLoginPage, getRegisterPage, postRegisterCredentials, postLoginCredent
 
 const authRouter = new Router()
 
+
 authRouter.route('/register')
     .get(getRegisterPage)
     .post(postRegisterCredentials)
+
 
 authRouter.route('/login')
     .get(getLoginPage)
@@ -22,7 +24,9 @@ authRouter.route('/login')
         postLoginCredentials
     )
 
+
 authRouter.route('/logout')
     .get(logout)
+
 
 module.exports = authRouter

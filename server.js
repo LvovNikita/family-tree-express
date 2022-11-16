@@ -32,7 +32,6 @@ function makeApp (session, router, logger, nodeEnv = 'development') {
         app.use(logger)
     }
 
-
     // SWAGGER
     if (nodeEnv === 'development') {
         app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(require('./config/swagger.json')))

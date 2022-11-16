@@ -1,26 +1,34 @@
 'use strict'
 
-// const User = require('./User')
+const User = require('./User')
+require('../tree/Tree') // FIXME: just for testing purposes
 
 const userController = {
     getProfilePage: async (req, res, next) => {
         if (req.isAuthenticated()) {
-            // const user = await User
-            //     .findOne({ _id: req.session.user._id })
-            //     .populate('trees') // FIXME: get current user from session
-            // if (user) {
-            return res
-                .status(200)
-                .render('profile', {
-                    title: 'Profile',
-                    user: { trees: [] } // FIXME: real user data!
-                })
-            // }
+            try {
+                const user = await User
+                    // FIXME: make method
+                    .findById(req.session.passport.user)
+                    .select({
+                        passwordHash: 0,
+                        salt: 0
+                    })
+                    .populate('trees')
+
+                return res
+                    .status(200)
+                    .render('profile', {
+                        title: 'Profile',
+                        user
+                    })
+            } catch (err) {
+                next(err)
+            }
         }
         return res
             .status(401)
-            .json({ error: 'Unauthorized' })
-            // .redirect('/auth/login')
+            .json({ error: 'Unauthorized' }) // FIXME: flash error
     }
 }
 

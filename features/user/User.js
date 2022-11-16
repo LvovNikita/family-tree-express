@@ -19,12 +19,6 @@ const userSchema = new mongoose.Schema({
     passwordHash: {
         type: String,
         required: true
-        // minLength: [
-        //     MIN_USER_PASSWORD_LENGTH,
-        //     `Must be at least ${MIN_USER_PASSWORD_LENGTH} characters long`
-        // ],
-        // match: /\S*/,
-        // select: false
     },
     salt: {
         type: String,
@@ -67,24 +61,7 @@ Object.assign(userSchema.statics, {
     }
 })
 
-//     login: async function (username, password) {
-//         const result = await User
-//             .findOne({ username })
-//             .select('+password')
-//             .then(user => {
-//                 if (!user) return new AuthResult('User doesn\'t exist', false)
-//                 if (user.password !== password) return new AuthResult('Invalid Credentials', false)
-//                 return new AuthResult(null, user)
-//             })
-//             .catch(err => {
-//                 return new AuthResult(err.message, false)
-//             })
-//         return result
-//     }
-
-
-
-// // HOOKS
+// HOOKS
 
 userSchema.pre('save', function (next) {
     this.updatedAt = new Date()

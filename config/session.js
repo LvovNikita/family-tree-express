@@ -9,7 +9,7 @@ module.exports = session({
     resave: false,
     saveUninitialized: true,
     cookie: {
-        secure: false, // true for production
+        secure: false, // FIXME: true for production
         maxAge: 1000 * 60 * 60 * 24 * 30 // ms
     },
     store: MongoStore.create({

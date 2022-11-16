@@ -45,8 +45,7 @@
                         "content": {
                             "html/text": {
                                 "schema": {
-                                    "type": "string",
-                                    "example": "<html>...<h1>Register Page</h1>...</html>"
+                                    "type": "string"
                                 }
                             }
                         }
@@ -63,14 +62,6 @@
                         "application/json": {
                             "schema": {
                                 "$ref": "#/components/schemas/UserCredentials"
-                            },
-                            "examples": {
-                                "User": {
-                                    "$ref": "#/components/examples/UserCredentialsExample"
-                                },
-                                "Admin": {
-                                    "$ref": "#/components/examples/AdminCredentialsExample"
-                                }
                             }
                         },
                         "application/x-www-form-urlencoded": {
@@ -82,19 +73,13 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "CREATED: User was created"
-                    },
-                    "302": {
-                        "description": "FOUND: Redirect to /auth/login"
+                        "description": "CREATED: User was created. Redirect to login page"
                     },
                     "400": {
-                        "description": "BAD REQUEST: Username/password validation error"
+                        "description": "BAD REQUEST: Username/password wasn't provided"
                     },
                     "409": {
                         "description": "CONFLICT: User already exists"
-                    },
-                    "422": {
-                        "description": "UNPROCESSABLE ENTITY: Empty username/password"
                     }
                 }
             }
@@ -118,7 +103,7 @@
             },
             "post": {
                 "summary": "Login user",
-                "description": "Login and redirect to index page or try again",
+                "description": "Login and redirect to profile page or try again",
                 "requestBody": {
                     "description": "Credentials from login form fields: username, password",
                     "required": true,
@@ -126,14 +111,6 @@
                         "application/json": {
                             "schema": {
                                 "$ref": "#/components/schemas/UserCredentials"
-                            },
-                            "examples": {
-                                "User": {
-                                    "$ref": "#/components/examples/UserCredentialsExample"
-                                },
-                                "Admin": {
-                                    "$ref": "#/components/examples/AdminCredentialsExample"
-                                }
                             }
                         },
                         "application/x-www-form-urlencoded": {
@@ -144,14 +121,11 @@
                     }
                 },
                 "responses": {
-                    "302": {
-                        "description": "FOUND: Redirect to user profile"
+                    "200": {
+                        "description": "OK: LogIn and redirect to user profile"
                     },
                     "401": {
-                        "description": "UNAUTHORIZED: Wrong credentials"
-                    },
-                    "422": {
-                        "description": "UNPROCESSABLE ENTITY: Empty username/password"
+                        "description": "UNAUTHORIZED: Incorrect username/password"
                     }
                 }
             }
@@ -172,6 +146,28 @@
                         }
                     }
                 }
+            }
+        },
+        "/user/profile": {
+            "get": {
+                "summary": "Returns current user profile page",
+                "responses": {
+                    "200": {
+                        "description": "OK: Returns EJS index template",
+                        "content": {
+                            "html/text": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/:id": {
+            "get": {
+                "summary": "Returnsuser profile page by id"
             }
         },
         "/person/create": {
@@ -204,16 +200,6 @@
             "delete": {
                 "summary": "Removes family tree"
             }
-        },
-        "/user/profile": {
-            "get": {
-                "summary": "Returns current user profile page"
-            }
-        },
-        "/user/:id": {
-            "get": {
-                "summary": "Returnsuser profile page by id"
-            }
         }
     },
     "components": {
@@ -229,20 +215,6 @@
                     }
                 },
                 "required": ["username", "password"]
-            }
-        },
-        "examples": {
-            "AdminCredentialsExample": {
-                "value": {
-                    "username": "admin",
-                    "password": "E7lK5R!7v10M"
-                }
-            },
-            "UserCredentialsExample": {
-                "value": {
-                    "username": "user",
-                    "password": "7r1i!2Go"
-                }
             }
         }
     }   

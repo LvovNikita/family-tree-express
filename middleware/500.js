@@ -1,8 +1,7 @@
 'use strict'
 
 module.exports = (err, req, res, next) => {
-    console.error(err.message)
-    res
+    return res
         .status(500)
         .render('error', {
             statusCode: 500,
