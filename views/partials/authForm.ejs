@@ -1,16 +1,24 @@
 <form action="<%= formActionSlug %>" method="POST">
-    <input 
-        type="text" 
-        name="username" 
-        placeholder="username" 
-        minlength="2" 
-        required
-        autofocus>
-    <input 
-        type="password" 
-        name="password" 
-        placeholder="password" 
-        minlength="8" 
-        required>
-    <button type="submit"><%= title %></button>
+    <div class="mb-3">
+        <input 
+            class="form-control"
+            type="text" 
+            name="username" 
+            placeholder="username" 
+            minlength="2" 
+            required
+            autofocus>
+    </div>
+    <div class="mb-3">
+        <input
+            class="form-control" 
+            type="password" 
+            name="password" 
+            placeholder="password" 
+            minlength="8" 
+            required>
+    </div>
+    <button type="submit" class="btn btn-primary">
+        <%= title %>
+    </button>
 </form>

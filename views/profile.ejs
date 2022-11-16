@@ -1,27 +1,47 @@
-<h1><%= title %></h1>
-<h2><%= user.username %></h2>
-<h2>My Family Trees</h2>
+<h1>
+    <%= title %>:
+    <%= user.username %> 
+</h1>
 
-<!-- TODO: make component -->
-<ul>
+<% if (user.trees.length) { %>
+    <h2>My Family Trees</h2>
+<% } %>
+    
+<!-- TODO: make component if needed -->
+<ul class="list-group list-group-flush">
     <% for (tree of user.trees) { %>
-        <li>
+        <li class="list-group-item">
             <form action="/tree/remove/<%= tree.id %>" method="POST">
                 <a href="/tree/<%= tree.id %>"><%= tree.title %></a>
-                <button>Remove</button>
+                <button class="btn btn-danger">Remove</button>
             </form>
         </li>
     <% } %>
 </ul>
 
-<form action="/tree/create" method="POST">
-    <input type="text" name="title" placeholder="Title">
-    <button>Create Family Tree</button>
+<form action="/tree/create" method="POST" class="row">
+    <div class="col-auto">
+        <input 
+            class="form-control" 
+            type="text" 
+            name="title" 
+            placeholder="Title">
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-primary">Create Family Tree</button>
+    </div>
 </form>
 
+<!-- FIXME: for testing purposes only: -->
+
 <hr>
-<h3>Debug Info</h3>
-<pre><%= user %></pre>
+
+<div class="card">
+    <div class="card-body">
+        <h3>Debug Info</h3>
+        <pre><%= user %></pre>
+    </div>
+</div>
 
 
 
