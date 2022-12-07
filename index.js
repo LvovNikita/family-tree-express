@@ -19,8 +19,6 @@ const app = makeApp(session, router, logger);
         console.log(`Server is running on http://${HOST}:${PORT}`) // FIXME:
     })
 
-    app.listen()
-
     // UNCAUGHT EXCEPTIONS
     process.on('uncaughtException', err => {
         console.log(err.message)

@@ -9,7 +9,7 @@ exports.getRegisterPage = async (req, res, next) => {
             .status(200)
             .render('register', {
                 title: 'Register',
-                formActionSlug: '/auth/register'
+                formActionSlug: '/auth/register',
             })
     } catch (err) {
         return next(err)
@@ -17,6 +17,7 @@ exports.getRegisterPage = async (req, res, next) => {
 }
 
 
+// TODO: validation error situation
 exports.postRegisterCredentials = async (req, res, next) => {
     const { username, password } = req.body
 

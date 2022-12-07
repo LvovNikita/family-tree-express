@@ -28,6 +28,7 @@ const userController = {
                 next(err)
             }
         }
+
         return res
             .status(401)
             .json({ error: 'Unauthorized' }) // FIXME: flash error

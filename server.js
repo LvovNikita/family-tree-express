@@ -2,6 +2,8 @@
 
 const swaggerUi = require('swagger-ui-express')
 
+const addPassportLocals = require('./middleware/addPassportLocals')
+
 function makeApp (session, router, logger, nodeEnv = 'development') {
     // DEPENDENCIES
     const express = require('express')
@@ -26,6 +28,8 @@ function makeApp (session, router, logger, nodeEnv = 'development') {
     require('./config/passport')
     app.use(passport.initialize())
     app.use(passport.session())
+    // TODO: to middleware
+    app.use(addPassportLocals)
 
     // LOGGER
     if (nodeEnv === 'development' && logger !== null) {
