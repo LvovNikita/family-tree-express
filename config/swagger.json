@@ -65,7 +65,7 @@
                         "description": "UNAUTHORIZED: Username/password wasn't provided"
                     },
                     "409": {
-                        "description": "CONFLICT: User already exists"
+                        "description": "CONFLICT: User already exists. Redirect to register page"
                     }
                 }
             }

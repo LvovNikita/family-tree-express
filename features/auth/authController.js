@@ -17,7 +17,6 @@ exports.getRegisterPage = async (req, res, next) => {
 }
 
 
-// TODO: validation error situation
 exports.postRegisterCredentials = async (req, res, next) => {
     const { username, password } = req.body
 
@@ -46,15 +45,14 @@ exports.postRegisterCredentials = async (req, res, next) => {
         if (existingUser) {
             req.flash('error', 'Username already exists. Please try again')
             return res
-                .status(409)
-                .redirect('/auth/register')
+                .type('html')
+                .redirect(409, '/auth/register')
         }
 
         await User.register(username, password)
 
         return res
-            .status(201)
-            .redirect('/auth/login')
+            .redirect(201, '/auth/login')
     } catch (err) {
         if (err instanceof ValidationError) {
             return res
