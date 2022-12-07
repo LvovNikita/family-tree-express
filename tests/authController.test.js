@@ -34,7 +34,7 @@ describe('POST /auth/register', () => {
         await supertest(app)
             .post('/auth/register')
             .send({})
-            .expect(400)
+            .expect(401)
             .expect('Content-Type', /json/) // FIXME:
     })
 
@@ -42,7 +42,7 @@ describe('POST /auth/register', () => {
         await supertest(app)
             .post('/auth/register')
             .send({ password: 'password' })
-            .expect(400)
+            .expect(401)
             .expect('Content-Type', /json/) // FIXME:
     })
 
@@ -50,7 +50,7 @@ describe('POST /auth/register', () => {
         await supertest(app)
             .post('/auth/register')
             .send({ username: 'user' })
-            .expect(400)
+            .expect(401)
             .expect('Content-Type', /json/) // FIXME:
     })
 })

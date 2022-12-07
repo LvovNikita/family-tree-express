@@ -1,7 +1,7 @@
 'use strict'
 
 const User = require('../user/User')
-
+const { ValidationError } = require('../../utils/errors')
 
 exports.getRegisterPage = async (req, res, next) => {
     try {
@@ -23,20 +23,20 @@ exports.postRegisterCredentials = async (req, res, next) => {
 
     if (!username && !password) {
         return res
-            .status(400)
-            .json({ error: 'Please provide username and password' }) // TODO: flash error instead
+            .status(401)
+            .json({ error: 'Please provide username and password' })
     }
 
     if (!username) {
         return res
-            .status(400)
-            .json({ error: 'Please provide username' }) // TODO: flash error instead
+            .status(401)
+            .json({ error: 'Please provide username' })
     }
 
     if (!password) {
         return res
-            .status(400)
-            .json({ error: 'Please provide password' }) // TODO: flash error instead
+            .status(401)
+            .json({ error: 'Please provide password' })
     }
 
     try {
@@ -56,6 +56,11 @@ exports.postRegisterCredentials = async (req, res, next) => {
             .status(201)
             .redirect('/auth/login')
     } catch (err) {
+        if (err instanceof ValidationError) {
+            return res
+                .status(401)
+                .json({ error: err.message })
+        }
         return next(err)
     }
 }
@@ -74,7 +79,7 @@ exports.getLoginPage = async (req, res, next) => {
     }
 }
 
-
+// check authRouter for passportjs implementation details
 exports.postLoginCredentials = async (err, req, res, next) => {
     if (err.status === 401) {
         return res

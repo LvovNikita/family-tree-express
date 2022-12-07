@@ -1,23 +1,9 @@
 {
     "openapi": "3.0.0",
-    "title": "FamilyTree API",
-    "version": "0.1.0",
-    "servers": [
-        {
-            "url": "{protocol}://localhost:{port}",
-            "description": "Local development server",
-            "variables": {
-                "protocol": {
-                    "enum": ["http"],
-                    "default": "http"
-                },
-                "port": {
-                    "enum": ["3000"],
-                    "default": "3000" 
-                }
-            }
-        }
-    ],
+    "info": {
+        "title": "FamilyTree API",
+        "version": "0.1.0"
+    },
     "paths": {
         "/": {
             "get": {
@@ -75,8 +61,8 @@
                     "201": {
                         "description": "CREATED: User was created. Redirect to login page"
                     },
-                    "400": {
-                        "description": "BAD REQUEST: Username/password wasn't provided"
+                    "401": {
+                        "description": "UNAUTHORIZED: Username/password wasn't provided"
                     },
                     "409": {
                         "description": "CONFLICT: User already exists"
@@ -167,38 +153,80 @@
         },
         "/user/:id": {
             "get": {
-                "summary": "Returnsuser profile page by id"
+                "summary": "Returns user profile page by id",
+                "responses": {
+                    "200": {
+                        "description": "OK: Returns EJS profile template"
+                    }
+                }
             }
         },
         "/person/create": {
             "get": {
-                "summary": "Returns person create page"
+                "summary": "Returns person create page",
+                "responses": {
+                    "100": {
+                        "description": "-"
+                    }
+                }
             },
-            "post": {}
+            "post": {
+                "summary": "Creates person",
+                "responses": {
+                    "100": {
+                        "description": "-"
+                    }
+                }
+            }
         },
         "/person/:id": {
             "get": {
-                "summary": "Returns person page"
+                "summary": "Returns person page",
+                "responses": {
+                    "100": {
+                        "description": "-"
+                    }
+                }
             }
         },
         "/person/remove/:id": {
             "delete": {
-                "summary": "Removes person"
+                "summary": "Removes person",
+                "responses": {
+                    "100": {
+                        "description": "-"
+                    }
+                }
             }
         },
         "/tree/create": {
             "post": {
-                "summary": "Creates family tree"
+                "summary": "Creates family tree",
+                "responses": {
+                    "100": {
+                        "description": "-"
+                    }
+                }
             }
         },
         "/tree/:id": {
             "get": {
-                "summary": "Returns family tree page"
+                "summary": "Returns family tree page",
+                "responses": {
+                    "100": {
+                        "description": "-"
+                    }
+                }
             }
         },
         "/tree/remove/:id": {
             "delete": {
-                "summary": "Removes family tree"
+                "summary": "Removes family tree",
+                "responses": {
+                    "100": {
+                        "description": "-"
+                    }
+                }
             }
         }
     },
@@ -217,5 +245,5 @@
                 "required": ["username", "password"]
             }
         }
-    }   
+    }
 }

@@ -3,6 +3,7 @@
 const mongoose = require('mongoose')
 
 const { generatePassword, validatePassword } = require('../../utils/password')
+const { ValidationError } = require('../../utils/errors')
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -45,16 +46,20 @@ const userSchema = new mongoose.Schema({
 // METHODS
 
 Object.assign(userSchema.methods, {
+    // used by passportjs verifyCb
     validatePassword: async function (password) {
         const isValid = await validatePassword(password, this.passwordHash, this.salt)
         return isValid
     }
 })
 
-// // STATICS
+// STATICS
 
 Object.assign(userSchema.statics, {
     register: async (username, password) => {
+        if (password.length < 8) {
+            throw new ValidationError('Password must be at least 8 characters long')
+        }
         const { hash, salt } = await generatePassword(password)
         const newUser = new User({ username, passwordHash: hash, salt })
         await newUser.save()

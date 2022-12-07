@@ -16,7 +16,7 @@ function generatePassword (password) {
     })
 }
 
-function validatePassword (password, hashFromDb, saltFromDb) {
+function validatePassword (password, hashFromDb, saltFromDb, minPasswordLength) {
     return new Promise((resolve, reject) => {
         scrypt(password, saltFromDb, 64, { N: 1024 }, (err, hash) => {
             if (err) {
