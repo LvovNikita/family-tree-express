@@ -9,7 +9,7 @@ exports.getRegisterPage = async (req, res, next) => {
             .status(200)
             .render('register', {
                 title: 'Register',
-                formActionSlug: '/auth/register',
+                formActionSlug: '/auth/register'
             })
     } catch (err) {
         return next(err)
@@ -42,11 +42,12 @@ exports.postRegisterCredentials = async (req, res, next) => {
     try {
         const existingUser = await User.findOne({ username })
 
+        // TODO: write test
         if (existingUser) {
-            console.log(existingUser)
+            req.flash('error', 'Username already exists. Please try again')
             return res
                 .status(409)
-                .json({ error: 'User already exists' }) // TODO: flash error instead
+                .redirect('/auth/register')
         }
 
         await User.register(username, password)

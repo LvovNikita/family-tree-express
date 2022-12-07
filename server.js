@@ -1,6 +1,7 @@
 'use strict'
 
 const swaggerUi = require('swagger-ui-express')
+const flash = require('express-flash')
 
 const addPassportLocals = require('./middleware/addPassportLocals')
 
@@ -28,8 +29,10 @@ function makeApp (session, router, logger, nodeEnv = 'development') {
     require('./config/passport')
     app.use(passport.initialize())
     app.use(passport.session())
-    // TODO: to middleware
     app.use(addPassportLocals)
+
+    // FLASH
+    app.use(flash())
 
     // LOGGER
     if (nodeEnv === 'development' && logger !== null) {

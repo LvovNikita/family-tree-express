@@ -18,6 +18,11 @@
             minlength="8" 
             required>
     </div>
+    <% if (messages.error) { %>
+        <div class="alert alert-danger" role="alert">
+            <%= messages.error %> 
+        </div>
+    <% } %>
     <button type="submit" class="btn btn-primary">
         <%= title %>
     </button>
