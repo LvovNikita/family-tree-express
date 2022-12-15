@@ -1,5 +1,7 @@
 'use strict'
 
+const path = require('node:path')
+
 const swaggerUi = require('swagger-ui-express')
 const flash = require('express-flash')
 
@@ -16,6 +18,14 @@ function makeApp (session, router, logger, nodeEnv = 'development') {
 
     // VIEW ENGINE
     app.set('view engine', 'ejs')
+    // FIXME:
+    app.set('views', [
+        path.join(__dirname, 'views'),
+        path.join(__dirname, 'views', 'auth'),
+        path.join(__dirname, 'views', 'user'),
+        path.join(__dirname, 'views', 'person'),
+        path.join(__dirname, 'views', 'tree')
+    ])
     app.use(ejsLayouts)
 
     // PARSERS
