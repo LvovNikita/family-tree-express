@@ -4,12 +4,14 @@
     "description": "family tree app",
     "main": "index.js",
     "scripts": {
-        "dev": "nodemon .",
+        "start": "cross-env NODE_ENV=production node index",
+        "dev": "cross-env NODE_ENV=development nodemon .",
         "test": "jest --watch"
     },
     "author": "Nikita 'sa3n' Lvov",
     "license": "ISC",
     "devDependencies": {
+        "cross-env": "^7.0.3",
         "eslint": "^8.23.0",
         "eslint-config-standard": "^17.0.0",
         "eslint-plugin-import": "^2.26.0",

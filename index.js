@@ -6,9 +6,9 @@ const database = require('./config/db')
 const router = require('./router')
 const logger = require('./config/logger')
 
-const { HOST, PORT } = require('./config/env')
+const { HOST, PORT, NODE_ENV } = require('./config/env')
 
-const app = makeApp(session, router, logger);
+const app = makeApp(session, router, logger, NODE_ENV);
 
 (async () => {
     // CONNECT TO DB
