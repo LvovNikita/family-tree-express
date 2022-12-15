@@ -41,7 +41,6 @@ exports.postRegisterCredentials = async (req, res, next) => {
     try {
         const existingUser = await User.findOne({ username })
 
-        // TODO: write test
         if (existingUser) {
             req.flash('error', 'Username already exists. Please try again')
             return res
