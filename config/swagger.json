@@ -62,10 +62,10 @@
                         "description": "CREATED: User was created. Redirect to login page"
                     },
                     "401": {
-                        "description": "UNAUTHORIZED: Username/password wasn't provided"
+                        "description": "UNAUTHORIZED: Username/password/email wasn't provided"
                     },
-                    "409": {
-                        "description": "CONFLICT: User already exists. Redirect to register page"
+                    "302": {
+                        "description": "FOUND: User already exists. Redirect to register page"
                     }
                 }
             }

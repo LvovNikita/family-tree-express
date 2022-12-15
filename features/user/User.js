@@ -17,6 +17,13 @@ const userSchema = new mongoose.Schema({
         trim: true,
         match: /\S*/
     },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true
+        // TODO: validation
+    },
     passwordHash: {
         type: String,
         required: true
@@ -56,12 +63,12 @@ Object.assign(userSchema.methods, {
 // STATICS
 
 Object.assign(userSchema.statics, {
-    register: async (username, password) => {
+    register: async (username, password, email) => {
         if (password.length < 8) {
             throw new ValidationError('Password must be at least 8 characters long')
         }
         const { hash, salt } = await generatePassword(password)
-        const newUser = new User({ username, passwordHash: hash, salt })
+        const newUser = new User({ username, email, passwordHash: hash, salt })
         await newUser.save()
     }
 })

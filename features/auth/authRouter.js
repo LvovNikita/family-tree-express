@@ -4,7 +4,14 @@ const passport = require('passport')
 
 const { Router } = require('express')
 
-const { getLoginPage, getRegisterPage, postRegisterCredentials, postLoginCredentials, logout } = require('./authController')
+const {
+    getLoginPage,
+    getRegisterPage,
+    postRegisterCredentials,
+    postLoginCredentials,
+    logout,
+    getPasswordResetPage
+} = require('./authController')
 
 const authRouter = new Router()
 
@@ -27,6 +34,17 @@ authRouter.route('/login')
 
 authRouter.route('/logout')
     .get(logout)
+
+authRouter.route('/passwordReset')
+    .get(getPasswordResetPage)
+    .post()
+
+authRouter.route('/passwordReset/:token')
+    .post()
+
+authRouter.route('/newPassword')
+    .get()
+    .post()
 
 
 module.exports = authRouter

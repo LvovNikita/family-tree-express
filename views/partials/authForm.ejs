@@ -1,26 +1,41 @@
 <form action="<%= formActionSlug %>" method="POST">
-    <div class="mb-3">
-        <input 
-            class="form-control"
-            type="text" 
-            name="username" 
-            placeholder="username" 
-            minlength="2" 
-            required
-            autofocus>
-    </div>
-    <div class="mb-3">
-        <input
-            class="form-control" 
-            type="password" 
-            name="password" 
-            placeholder="password" 
-            minlength="8" 
-            required>
-    </div>
+    <% if (showFields.username) { %>
+        <div class="mb-3">
+            <input 
+                class="form-control"
+                type="text" 
+                name="username" 
+                placeholder="username" 
+                minlength="2" 
+                required
+                autofocus>
+        </div> 
+    <% } %>
+    <% if (showFields.email) { %>
+        <div class="mb-3">
+            <input 
+                class="form-control"
+                type="email" 
+                name="email" 
+                placeholder="email"  
+                required
+                autofocus>
+        </div>
+    <% } %>
+    <% if (showFields.password) { %>
+        <div class="mb-3">
+            <input
+                class="form-control" 
+                type="password" 
+                name="password" 
+                placeholder="password" 
+                minlength="8" 
+                required>
+        </div>
+    <% } %>
     <% if (messages.error) { %>
         <div class="alert alert-danger" role="alert">
-            <%= messages.error %> 
+            <%- messages.error %> 
         </div>
     <% } %>
     <button type="submit" class="btn btn-primary">

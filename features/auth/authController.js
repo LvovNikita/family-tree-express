@@ -9,7 +9,12 @@ exports.getRegisterPage = async (req, res, next) => {
             .status(200)
             .render('register', {
                 title: 'Register',
-                formActionSlug: '/auth/register'
+                formActionSlug: '/auth/register',
+                showFields: {
+                    username: true,
+                    email: true,
+                    password: true
+                }
             })
     } catch (err) {
         return next(err)
@@ -18,18 +23,18 @@ exports.getRegisterPage = async (req, res, next) => {
 
 
 exports.postRegisterCredentials = async (req, res, next) => {
-    const { username, password } = req.body
-
-    if (!username && !password) {
-        return res
-            .status(401)
-            .json({ error: 'Please provide username and password' })
-    }
+    const { username, password, email } = req.body
 
     if (!username) {
         return res
             .status(401)
             .json({ error: 'Please provide username' })
+    }
+
+    if (!email) {
+        return res
+            .status(401)
+            .json({ error: 'Please provide email' })
     }
 
     if (!password) {
@@ -39,37 +44,54 @@ exports.postRegisterCredentials = async (req, res, next) => {
     }
 
     try {
-        const existingUser = await User.findOne({ username })
+        const existingUser = await User.findOne({
+            $or: [{ username }, { email }]
+        })
 
         if (existingUser) {
-            req.flash('error', 'Username already exists. Please try again')
+            if (existingUser.username === username) {
+                req.flash(
+                    'error',
+                    'Username already exists. Please try again'
+                )
+            } else if (existingUser.email === email) {
+                req.flash(
+                    'error',
+                    'Email already exists. Please try again'
+                )
+            }
             return res
                 .type('html')
-                .redirect(409, '/auth/register')
+                .redirect('/auth/register')
+        } else {
+            await User
+                .register(username, password, email)
+            return res
+                .redirect('/auth/login')
         }
-
-        await User.register(username, password)
-
-        return res
-            .redirect(201, '/auth/login')
     } catch (err) {
         if (err instanceof ValidationError) {
             return res
                 .status(401)
                 .json({ error: err.message })
+        } else {
+            return next(err)
         }
-        return next(err)
     }
 }
 
 
 exports.getLoginPage = async (req, res, next) => {
     try {
-        res
+        return res
             .status(200)
             .render('login', {
                 title: 'Login',
-                formActionSlug: '/auth/login'
+                formActionSlug: '/auth/login',
+                showFields: {
+                    username: true,
+                    password: true
+                }
             })
     } catch (err) {
         return next(err)
@@ -79,8 +101,8 @@ exports.getLoginPage = async (req, res, next) => {
 // check authRouter for passportjs implementation details
 exports.postLoginCredentials = async (err, req, res, next) => {
     if (err.status === 401) {
+        req.flash('error', 'Wrong username or password. Try again or click <a href="/auth/passwordReset">Reset Password</a>')
         return res
-            .status(401)
             .redirect('/auth/login') // FIXME: flash message instead
     }
     return next(err)
@@ -98,3 +120,22 @@ exports.logout = async (req, res, next) => {
             .redirect('/')
     })
 }
+
+// TODO:
+exports.getPasswordResetPage = async (req, res, next) => {
+    try {
+        return res
+            .status(200)
+            .render('passwordReset', {
+                title: 'Reset Password',
+                formActionSlug: '/auth/passwordReset',
+                showFields: {
+                    email: true
+                }
+            })
+    } catch (err) {
+        next(err)
+    }
+}
+
+// exports.postPasswordResetCredentials = async (req, res, next) => {}
