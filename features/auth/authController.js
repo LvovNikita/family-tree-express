@@ -1,7 +1,12 @@
 'use strict'
 
+const crypto = require('node:crypto')
+const { promisify } = require('node:util')
+const randomBytes = promisify(crypto.randomBytes)
+
 const User = require('../user/User')
 const { ValidationError } = require('../../utils/errors')
+const { sendMail } = require('../../utils/mail')
 
 exports.getRegisterPage = async (req, res, next) => {
     try {
@@ -120,7 +125,7 @@ exports.logout = async (req, res, next) => {
     })
 }
 
-// TODO:
+
 exports.getPasswordResetPage = async (req, res, next) => {
     try {
         return res
@@ -137,4 +142,47 @@ exports.getPasswordResetPage = async (req, res, next) => {
     }
 }
 
-// exports.postPasswordResetCredentials = async (req, res, next) => {}
+
+exports.postPasswordResetCredentials = async (req, res, next) => {
+    try {
+        const email = req.body.email
+        const user = await User.findOne({ email })
+        if (user) {
+            const buffer = await randomBytes(32)
+            const passwordResetToken = buffer.toString('hex')
+            user.passwordResetToken = passwordResetToken
+            user.passwordResetTokenExpiration = Date.now() + 1000 * 60 * 60
+            await user.save()
+            await sendMail(
+                email,
+                'Reset Password',
+                `http://localhost:3000/auth/newPassword/${passwordResetToken}`
+            )
+            return res.json({
+                message: 'Password was sent to',
+                email
+            })
+        } else {
+            req.flash(
+                'error',
+                'Wrong email address'
+            )
+            res
+                .redirect('/auth/passwordReset')
+        }
+    } catch (err) {
+        return next(err)
+    }
+}
+
+
+exports.getNewPasswordPage = async (req, res, next) => {
+    // FIXME: if such token exists:
+    return res.render('passwordReset', {
+        title: 'Set New Password',
+        formActionSlug: `/auth/newPassword/${req.params.token}`,
+        showFields: {
+            password: true
+        }
+    })
+}

@@ -2,12 +2,12 @@ const nodemailerTransporter = require('../config/nodemailer')
 
 const { NODEMAILER_USER } = require('../config/env')
 
-function sendMail (to, subject, html) {
+function sendMail (to, subject, text) {
     nodemailerTransporter.sendMail({
-        from: `FamilyTree <${NODEMAILER_USER}>`,
+        from: NODEMAILER_USER,
         to,
         subject,
-        html
+        text
     })
 }
 

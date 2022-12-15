@@ -32,6 +32,12 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    passwordResetToken: {
+        type: String
+    },
+    passwordResetTokenExpiration: {
+        type: Date
+    },
     trees: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Tree'
