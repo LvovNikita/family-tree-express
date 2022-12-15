@@ -9,11 +9,12 @@ const User = require('../features/user/User')
 
 jest
     .spyOn(User, 'findOne')
-    .mockImplementation(({ username }) => {
+    .mockImplementation(({ $or }) => {
         return new Promise((resolve, reject) => {
-            if (username === 'existingUser') {
+            if ($or[0].username === 'existingUser' || $or[1].email === 'existingUser@test.com') {
                 return resolve({
-                    username: 'existingUser'
+                    username: 'existingUser',
+                    email: 'existingUser@test.com'
                 })
             }
             return resolve(null)
@@ -40,14 +41,15 @@ describe('GET /auth/register', () => {
 
 
 describe('POST /auth/register', () => {
-    test('should respond with a statusCode 201 and create a user', async () => {
+    test('should create the user and redirect to /auth/login', async () => {
         await supertest(app)
             .post('/auth/register')
             .send({
                 username: 'newUser',
+                email: 'newUser@test.com',
                 password: 'newUserPassword'
             })
-            .expect(201)
+            .expect(302)
             .expect('Location', '/auth/login')
     })
 
@@ -62,7 +64,7 @@ describe('POST /auth/register', () => {
     test('should respond with a statusCode 401 if the username was not provided', async () => {
         await supertest(app)
             .post('/auth/register')
-            .send({ password: 'password' })
+            .send({ password: 'password', email: 'email@test.com' })
             .expect(401)
             .expect('Content-Type', /json/)
     })
@@ -70,19 +72,40 @@ describe('POST /auth/register', () => {
     test('should respond with a statusCode 401 if the password was not provided', async () => {
         await supertest(app)
             .post('/auth/register')
-            .send({ username: 'user' })
+            .send({ username: 'user', email: 'email@test.com' })
             .expect(401)
             .expect('Content-Type', /json/)
     })
 
-    test('should respond with a statusCode 409 if user already exists', async () => {
+    test('should respond with a statusCode 401 if the email was not provided', async () => {
+        await supertest(app)
+            .post('/auth/register')
+            .send({ username: 'user', password: 'password' })
+            .expect(401)
+            .expect('Content-Type', /json/)
+    })
+
+    test('should redirect ot /auth/register if username already exists', async () => {
         await supertest(app)
             .post('/auth/register')
             .send({
                 username: 'existingUser',
+                email: 'newUser@test.com',
                 password: 'existingUserPassword'
             })
-            .expect(409)
+            .expect(302)
+            .expect('Location', '/auth/register')
+    })
+
+    test('should redirect ot /auth/register if email already exists', async () => {
+        await supertest(app)
+            .post('/auth/register')
+            .send({
+                username: 'newUser',
+                email: 'existingUser@test.com',
+                password: 'existingUserPassword'
+            })
+            .expect(302)
             .expect('Location', '/auth/register')
     })
 })

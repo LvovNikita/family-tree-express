@@ -61,7 +61,6 @@ exports.postRegisterCredentials = async (req, res, next) => {
                 )
             }
             return res
-                .type('html')
                 .redirect('/auth/register')
         } else {
             await User
