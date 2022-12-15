@@ -31,8 +31,8 @@ npm install
 Настроить Nodemailer для отправки писем:
 
 * указать в .env переменные:
-    * NODEMAILER_USER=<email_address>
-    * NODEMAILER_PASS=<password>
+    * NODEMAILER_USER=email_address
+    * NODEMAILER_PASS=password
 
 Возможно будет необходимо настроить права доступа на почтовом сервере. На примере Yandex:
 * Yandex > Настройки > Акканут > Безопасность > Пароли приложений > Создать новый пароль

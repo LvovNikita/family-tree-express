@@ -5,6 +5,7 @@ const { promisify } = require('node:util')
 const randomBytes = promisify(crypto.randomBytes)
 
 const User = require('../user/User')
+const { generatePassword } = require('../../utils/password')
 const { ValidationError } = require('../../utils/errors')
 const { sendMail } = require('../../utils/mail')
 
@@ -149,14 +150,14 @@ exports.postPasswordResetCredentials = async (req, res, next) => {
         const user = await User.findOne({ email })
         if (user) {
             const buffer = await randomBytes(32)
-            const passwordResetToken = buffer.toString('hex')
-            user.passwordResetToken = passwordResetToken
+            const token = buffer.toString('hex')
+            user.passwordResetToken = token
             user.passwordResetTokenExpiration = Date.now() + 1000 * 60 * 60
             await user.save()
             await sendMail(
                 email,
                 'Reset Password',
-                `http://localhost:3000/auth/newPassword/${passwordResetToken}`
+                `Click to reset password: http://localhost:3000/auth/newPassword/${token}. Link is valid for 1 hour`
             )
             return res.json({
                 message: 'Password was sent to',
@@ -177,12 +178,47 @@ exports.postPasswordResetCredentials = async (req, res, next) => {
 
 
 exports.getNewPasswordPage = async (req, res, next) => {
-    // FIXME: if such token exists:
-    return res.render('passwordReset', {
-        title: 'Set New Password',
-        formActionSlug: `/auth/newPassword/${req.params.token}`,
-        showFields: {
-            password: true
+    try {
+        return res.render('passwordReset', {
+            title: 'Set New Password',
+            formActionSlug: `/auth/newPassword/${req.params.token}`,
+            showFields: {
+                password: true
+            }
+        })
+    } catch (err) {
+        next(err)
+    }
+}
+
+exports.postNewPassword = async (req, res, next) => {
+    try {
+        const token = req.params.token
+        const user = await User.findOne({
+            passwordResetToken: token,
+            passwordResetTokenExpiration: { $gt: Date.now() }
+        })
+        if (user) {
+            // FIXME: extract to User.updatePassword()
+            const password = req.body.password
+            if (password.length < 8) {
+                throw new ValidationError('Password must be at least 8 characters long')
+            }
+            const { hash, salt } = await generatePassword(password)
+            user.passwordHash = hash
+            user.salt = salt
+            await user.save()
+            return res
+                .redirect('/auth/login')
+        } else {
+            req.flash(
+                'error',
+                'Invalid or expired token. Try reset password again '
+            )
+            return res
+                .redirect('/auth/passwordReset')
         }
-    })
+    } catch (err) {
+        next(err)
+    }
 }

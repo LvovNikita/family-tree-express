@@ -12,7 +12,8 @@ const {
     logout,
     getPasswordResetPage,
     postPasswordResetCredentials,
-    getNewPasswordPage
+    getNewPasswordPage,
+    postNewPassword
 } = require('./authController')
 
 const authRouter = new Router()
@@ -43,7 +44,7 @@ authRouter.route('/passwordReset')
 
 authRouter.route('/newPassword/:token')
     .get(getNewPasswordPage)
-    .post()
+    .post(postNewPassword)
 
 
 module.exports = authRouter
