@@ -17,6 +17,7 @@ const userController = {
                         salt: 0
                     })
                     .populate('trees')
+                    .populate('persons')
 
                 return res
                     .status(200)

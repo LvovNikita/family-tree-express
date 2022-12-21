@@ -49,14 +49,38 @@
         <input 
             class="form-control" 
             type="date" 
-            name="dob"
+            name="dod"
         >
     </section>
     <!-- PARTNER -->
     <section class="mb-3">
             <label for="partner">Partner</label>
             <select class="form-select" name="partner">
-                <!-- TODO: -->
+                <option value="" disabled selected></option>
+                <% for (person of persons) { %>
+                    <option value="<%= person.id %>">
+                        <!-- TODO: make component! -->
+                        <%= person.lastname %>
+                        <% if (person.lastnameAtBirth) { %>
+                            (<%= person.lastnameAtBirth %>)
+                        <% } %>
+                        <%= person.firstname %> 
+                        <%= person.middlename %>
+                        <%= person.gender %>
+                        
+                        <% if (!person.dob) { %>
+                            unknown
+                        <% } else { %>
+                            <%= (new Date(person.dob)).getFullYear() %>
+                        <% } %>
+                        –
+                        <% if (!person.dod) { %>
+                            unknown
+                        <% } else { %>
+                            <%= person.dod %>
+                        <% } %>
+                    </option>
+                <% } %>
             </select>
     </section>
     <!-- CHILDREN -->
@@ -64,10 +88,41 @@
         <div>
             <label for="children">Children</label>
             <select class="form-select" name="children" multiple>
-                <!-- TODO: -->
+                <% for (person of persons) { %>
+                    <option value="<%= person.id %>">
+                        <!-- TODO: make component! -->
+                        <%= person.lastname %>
+                        <% if (person.lastnameAtBirth) { %>
+                            (<%= person.lastnameAtBirth %>)
+                        <% } %>
+                        <%= person.firstname %> 
+                        <%= person.middlename %>
+                        <%= person.gender %>
+                        
+                        <% if (!person.dob) { %>
+                            unknown
+                        <% } else { %>
+                            <%= (new Date(person.dob)).getFullYear() %>
+                        <% } %>
+                        –
+                        <% if (!person.dod) { %>
+                            unknown
+                        <% } else { %>
+                            <%= person.dod %>
+                        <% } %>
+                    </option>
+                <% } %>
             </select>
+            <p>Hold CTRL to cancel selection</p>
         </div>
     </section>
 
     <button class="btn btn-primary">Create</button>
 </form>
+
+<div class="card">
+    <div class="card-body">
+        <h3>Debug Info</h3>
+        <pre><%= persons %></pre>
+    </div>
+</div>

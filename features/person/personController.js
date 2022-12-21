@@ -1,24 +1,53 @@
 'use strict'
 
-// const Person = require('./Person')
+const Person = require('./Person')
 // const Tree = require('../tree/Tree')
-// const User = require('../models/User')
+const User = require('../user/User')
 
 const personController = {
-    getCreatePersonPage: (req, res, next) => {
-        res.render('personCreate', { title: 'Create Person' })
+    getCreatePersonPage: async (req, res, next) => {
+        try {
+            // FIXME: add passport.authenticate middleware!
+            const currentUserId = req.session.passport?.user
+            const currentUser = await User
+                .findById(currentUserId)
+                .populate('persons')
+            return res.render('personCreate', {
+                title: 'Create Person',
+                persons: currentUser.persons
+            })
+        } catch (err) {
+            return next(err)
+        }
     },
     postCreatePerson: async (req, res, next) => {
-        // const currentUser = await User.findOne({ _id: req.session.user._id })
-        // const newPerson = await Person.create({
-        //     firstname: req.body.firstname,
-        //     lastname: req.body.lastname
-        // }) // TODO: catch TODO: other fields
-        // const currentTree = await Tree.findOne({ id: req.body.tree }) // TODO: catch
-        // // TODO: does user have an access to tree?
-        // currentTree.persons.push(newPerson._id)
-        // await currentTree.save()
-        // return res.redirect('/user/profile') // FIXME: redirect to the current tree
+        const currentUserId = req.session.passport?.user
+        const currentUser = await User.findById(currentUserId)
+        // FIXME: add passport.authenticate middleware!
+        if (!currentUser) {
+            return res
+                .status(401)
+                .json({
+                    error: 'Please log in'
+                })
+        }
+        const newPersonObj = {
+            lastname: req.body.lastname,
+            lastnameAtBirth: req.body.lastnameAtBirth,
+            firstname: req.body.firstname,
+            middlename: req.body.middlename,
+            gender: req.body.gender,
+            dob: req.body.dob,
+            dod: req.body.dod,
+            // FIXME:
+            partner: req.body.partner,
+            // FIXME
+            children: req.body.children
+        }
+        const newPerson = await Person.create(newPersonObj)
+        currentUser.persons.push(newPerson.id)
+        await currentUser.save()
+        return res.redirect('/user/profile')
     },
     postRemovePerson: async (req, res, next) => {
         // await Person.deleteOne({ id: req.body.id }) // TODO: catch

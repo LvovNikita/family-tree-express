@@ -39,7 +39,30 @@
 <% } %>
 
 <ul>
-    <!-- TODO: persons -->
+    <% for( person of user.persons ) { %>
+        <li>
+            <!-- TODO: make component! -->
+            <%= person.lastname %>
+            <% if (person.lastnameAtBirth) { %>
+                (<%= person.lastnameAtBirth %>)
+            <% } %>
+            <%= person.firstname %> 
+            <%= person.middlename %>
+            <%= person.gender %>
+            
+            <% if (!person.dob) { %>
+                unknown
+            <% } else { %>
+                <%= (new Date(person.dob)).getFullYear() %>
+            <% } %>
+            –
+            <% if (!person.dod) { %>
+                unknown
+            <% } else { %>
+                <%= person.dod %>
+            <% } %>
+        </li>
+    <% } %> 
 </ul>
 
 <div>
