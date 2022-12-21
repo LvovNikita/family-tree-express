@@ -2,16 +2,23 @@
 
 const { Router } = require('express')
 
-const personController = require('./personController')
-const tryCatchWrapper = require('../../utils/tryCatchWrapper')
+const {
+    getCreatePersonPage,
+    postCreatePerson,
+    getPersonPage,
+    postRemovePerson
+} = require('./personController')
 
 const personRouter = new Router()
 
 personRouter.route('/create')
-    .get(tryCatchWrapper(personController.getCreatePersonPage))
-    .post(tryCatchWrapper(personController.postCreatePerson))
+    .get(getCreatePersonPage)
+    .post(postCreatePerson)
 
-personRouter.get('/:id', tryCatchWrapper(personController.getPersonById))
-personRouter.post('/remove/:id', tryCatchWrapper(personController.postRemovePerson))
+personRouter
+    .get('/:id', getPersonPage)
+
+personRouter
+    .post('/remove/:id', postRemovePerson)
 
 module.exports = personRouter

@@ -1,50 +1,57 @@
 <h1><%= title %></h1>
 <form action="/person/create" method="post">
     <input type="text" id="treeId" name="treeId" hidden>
+    <p>Name</p>
     <section>
-        <input type="text" name="lastname" placeholder="Lastname">
-        <input type="text" name="lastnameAtBirth" placeholder="Lastname At Birth"> 
-        <input type="text" name="firstname" placeholder="Firstname">
-        <input type="text" name="middlename" placeholder="Middlename"> 
+        <div class="input-group">
+            <input 
+                class="form-control" 
+                type="text" 
+                name="lastname" 
+                placeholder="Lastname"
+            >
+            <input 
+                class="form-control" 
+                type="text" 
+                name="lastnameAtBirth" 
+                placeholder="Lastname At Birth"
+            > 
+        </div>
+        <input 
+            class="form-control" 
+            type="text" name="firstname" 
+            placeholder="Firstname"
+        >
+        <input class="form-control" type="text" name="middlename" placeholder="Middlename"> 
     </section>
     <section>
         <label for="gender">Gender</label>
-        <select name="gender">
+        <select class="form-select" name="gender">
             <option value="M">Male</option>
             <option value="F">Female</option>
         </select>
     </section>
-    <section>
-        <label for="dob">Date of birth:</label>
-        <input type="date" name="dob">
-        <label for="dod">Date of death:</label>
-        <input type="date" name="dob">
+    <section class="input-group">
+        <!-- <label for="dob">Date of birth:</label> -->
+        <span class="input-group-text">Date of Birth:</span>
+        <input class="form-control" type="date" name="dob">
+        <!-- <label for="dod">Date of death:</label> -->
+        <span class="input-group-text">Date of Death</span>
+        <input class="form-control" type="date" name="dob">
     </section>
     <section>
         <div>
             <label for="partner">Partner</label>
-            <select name="partner">
+            <select class="form-select" name="partner">
                 <!-- TODO: -->
             </select>
         </div>
         <div>
             <label for="children">Children</label>
-            <select name="children" multiple>
-                <!-- TODO: -->
-            </select>
-        </div>
-        <div>
-            <label for="userRef">userRef</label>
-            <select name="userRef">
+            <select class="form-select" name="children" multiple>
                 <!-- TODO: -->
             </select>
         </div>
     </section>
-    <button>Save</button>
+    <button>Create</button>
 </form>
-
-<!-- FIXME: use res.locals instead? -->
-<script defer>
-    const url = new URLSearchParams(window.location.search)
-    document.querySelector('#treeId').value = url.get('tree')
-</script>

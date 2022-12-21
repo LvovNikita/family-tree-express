@@ -42,6 +42,10 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Tree'
     }],
+    persons: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Person'
+    }],
     friends: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
