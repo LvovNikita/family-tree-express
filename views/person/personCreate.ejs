@@ -1,9 +1,9 @@
 <h1><%= title %></h1>
+
 <form action="/person/create" method="post">
-    <input type="text" id="treeId" name="treeId" hidden>
-    <p>Name</p>
+    <!-- NAME -->
     <section>
-        <div class="input-group">
+        <div class="input-group mb-3">
             <input 
                 class="form-control" 
                 type="text" 
@@ -18,34 +18,49 @@
             > 
         </div>
         <input 
-            class="form-control" 
+            class="form-control mb-3" 
             type="text" name="firstname" 
             placeholder="Firstname"
         >
-        <input class="form-control" type="text" name="middlename" placeholder="Middlename"> 
+        <input 
+            class="form-control mb-3" 
+            type="text" 
+            name="middlename" 
+            placeholder="Middlename"
+        > 
     </section>
-    <section>
-        <label for="gender">Gender</label>
-        <select class="form-select" name="gender">
+    <!-- GENDER -->
+    <section class="input-group mb-3">
+        <span class="input-group-text">Gender:</span>
+        <select class="form-select" name="gender" required>
             <option value="M">Male</option>
             <option value="F">Female</option>
         </select>
     </section>
-    <section class="input-group">
-        <!-- <label for="dob">Date of birth:</label> -->
+    <!-- DOB, DOD -->
+    <section class="input-group mb-3">
         <span class="input-group-text">Date of Birth:</span>
-        <input class="form-control" type="date" name="dob">
-        <!-- <label for="dod">Date of death:</label> -->
+        <input 
+            class="form-control" 
+            type="date" 
+            name="dob"
+        >
         <span class="input-group-text">Date of Death</span>
-        <input class="form-control" type="date" name="dob">
+        <input 
+            class="form-control" 
+            type="date" 
+            name="dob"
+        >
     </section>
-    <section>
-        <div>
+    <!-- PARTNER -->
+    <section class="mb-3">
             <label for="partner">Partner</label>
             <select class="form-select" name="partner">
                 <!-- TODO: -->
             </select>
-        </div>
+    </section>
+    <!-- CHILDREN -->
+    <section class="mb-3">
         <div>
             <label for="children">Children</label>
             <select class="form-select" name="children" multiple>
@@ -53,5 +68,6 @@
             </select>
         </div>
     </section>
-    <button>Create</button>
+
+    <button class="btn btn-primary">Create</button>
 </form>
