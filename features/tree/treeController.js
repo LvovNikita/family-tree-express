@@ -1,6 +1,6 @@
 'use strict'
 
-// const { ObjectId } = require('mongoose').Types
+const { ObjectId } = require('mongoose').Types
 
 const Tree = require('./Tree')
 const User = require('./../user/User')
@@ -9,6 +9,7 @@ exports.postCreateTree = async (req, res, next) => {
     try {
         const currentUserId = req.session.passport?.user
         const currentUser = await User.findById(currentUserId)
+        // FIXME: add passport.authenticate middleware!
         if (!currentUser) {
             return res
                 .status(401)
@@ -19,7 +20,7 @@ exports.postCreateTree = async (req, res, next) => {
         const treeTitle = req.body.title
         if (!treeTitle) {
             return res
-                .status(401)
+                .status(422)
                 .json({
                     error: 'Please provide tree title!'
                 })
@@ -39,17 +40,37 @@ exports.postCreateTree = async (req, res, next) => {
 
 
 exports.postRemoveTree = async (req, res, next) => {
-    // const currentUser = await User.findOne({ _id: req.session.user._id })
-    // await User.updateOne({ _id: currentUser.id }, {
-    //     $pull: {
-    //         trees: new ObjectId(req.params.id)
-    //     }
-    // }) // FIXME: get current user from session TODO: catch
-    // await Tree.deleteOne({
-    //     _id: req.params.id
-    // }) // TODO: catch
-    // return res.redirect('/user/profile')
-    next()
+    try {
+        const currentUserId = req.session.passport?.user
+        const currentUser = await User.findById(currentUserId)
+        // FIXME: add passport.authenticate middleware!
+        if (!currentUser) {
+            return res
+                .status(401)
+                .json({
+                    error: 'Please log in'
+                })
+        }
+        const treeId = req.params.id
+        const tree = await Tree.findById(treeId)
+        if (!tree) {
+            return res
+                .status(404)
+                .json({
+                    error: 'No content'
+                })
+        }
+        tree.delete()
+        await User.updateOne({ _id: currentUser.id }, {
+            $pull: {
+                trees: new ObjectId(treeId)
+            }
+        })
+        return res
+            .redirect('/user/profile')
+    } catch (err) {
+        next()
+    }
 }
 
 

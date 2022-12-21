@@ -13,6 +13,6 @@ treeRouter
     .post('/create', postCreateTree)
 
 treeRouter
-    .post('/:id/remove', postRemoveTree)
+    .post('/remove/:id', postRemoveTree)
 
 module.exports = treeRouter
