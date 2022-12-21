@@ -2,22 +2,20 @@
 
 const path = require('node:path')
 
+const express = require('express')
+const passport = require('passport')
+const ejsLayouts = require('express-ejs-layouts') // FIXME:
 const swaggerUi = require('swagger-ui-express')
 const flash = require('express-flash')
 
 const addPassportLocals = require('./middleware/addPassportLocals')
 
-function makeApp (session, router, logger, nodeEnv = 'development') {
-    // DEPENDENCIES
-    const express = require('express')
-    const passport = require('passport')
-    const ejsLayouts = require('express-ejs-layouts') // FIXME:
-
+function makeApp (session, router, viewEngine, logger, nodeEnv = 'development') {
     // SERVER
     const app = express()
 
     // VIEW ENGINE
-    app.set('view engine', 'ejs')
+    app.set('view engine', viewEngine)
     // FIXME:
     app.set('views', [
         path.join(__dirname, 'views'),

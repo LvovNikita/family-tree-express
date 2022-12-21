@@ -8,7 +8,7 @@ const logger = require('./config/logger')
 
 const { HOST, PORT, NODE_ENV } = require('./config/env')
 
-const app = makeApp(session, router, logger, NODE_ENV);
+const app = makeApp(session, router, 'ejs', logger, NODE_ENV);
 
 (async () => {
     // CONNECT TO DB

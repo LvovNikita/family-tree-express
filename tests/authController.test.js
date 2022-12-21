@@ -1,11 +1,25 @@
 const supertest = require('supertest')
 
+const session = require('express-session')
+
 const makeServer = require('../server')
 const router = require('../router')
-const session = require('../config/session')
-
-// TODO: mock session & passport.authenticate
 const User = require('../features/user/User')
+
+// TODO: passport, flash, ejsLayouts
+
+// mocks
+
+const sessionConfig = session({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: true
+})
+
+const res = {
+    status: jest.fn(),
+    render: jest.fn()
+}
 
 jest
     .spyOn(User, 'findOne')
@@ -27,15 +41,19 @@ jest
         Promise.resolve()
     )
 
-const app = makeServer(session, router, null)
+// tests
+
+const app = makeServer(sessionConfig, router, 'ejs', 'null', 'testing')
 
 
 describe('GET /auth/register', () => {
-    test('should respond with a statusCode 200', async () => {
-        await supertest(app)
-            .get('/auth/register')
-            .expect(200)
-            .expect('Content-Type', /html/)
+    const { getRegisterPage } = require('../features/auth/authController')
+
+    test('should respond call render function', async () => {
+        const req = { path: '/auth/register', method: 'GET' }
+        getRegisterPage(req, res, () => {})
+        expect(res.render).toHaveBeenCalledTimes(1)
+        expect(res.render.mock.calls[0][0]).toBe('register')
     })
 })
 
@@ -85,7 +103,7 @@ describe('POST /auth/register', () => {
             .expect('Content-Type', /json/)
     })
 
-    test('should redirect ot /auth/register if username already exists', async () => {
+    test('should redirect to /auth/register if username already exists', async () => {
         await supertest(app)
             .post('/auth/register')
             .send({
@@ -97,7 +115,7 @@ describe('POST /auth/register', () => {
             .expect('Location', '/auth/register')
     })
 
-    test('should redirect ot /auth/register if email already exists', async () => {
+    test('should redirect to /auth/register if email already exists', async () => {
         await supertest(app)
             .post('/auth/register')
             .send({

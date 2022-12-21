@@ -12,7 +12,7 @@ const { sendMail } = require('../../utils/mail')
 exports.getRegisterPage = async (req, res, next) => {
     try {
         return res
-            .status(200)
+            // .status(200)
             .render('register', {
                 title: 'Register',
                 formActionSlug: '/auth/register',

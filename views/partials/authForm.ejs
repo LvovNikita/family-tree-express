@@ -30,7 +30,14 @@
                 name="password" 
                 placeholder="password" 
                 minlength="8" 
-                required>
+                required
+            >
+            <!-- FIXME: -->
+            <% if (title != 'Login') { %>
+                <div class="form-text">
+                    Password must be at least 8 characters long
+                </div>
+            <% } %>
         </div>
     <% } %>
     <% if (messages.error) { %>
