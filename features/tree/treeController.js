@@ -75,15 +75,17 @@ exports.postRemoveTree = async (req, res, next) => {
 
 
 exports.getTreePage = async (req, res, next) => {
-    // const tree = await Tree.findById(req.params.id).populate('persons')
-    const tree = { // FIXME: for testing purposes only!
-        title: '',
-        persons: []
+    try {
+        const tree = await Tree
+            .findById(req.params.id)
+            // TODO: populate persons
+            // .populate('persons')
+        return res.render('tree', {
+            title: tree.title,
+            tree
+        })
+    } catch (err) {
+        next(err)
     }
-    res.render('tree', {
-        title: tree.title,
-        tree
-    })
-    // next()
 }
 
