@@ -6,22 +6,35 @@ const Tree = require('./Tree')
 const User = require('./../user/User')
 
 exports.postCreateTree = async (req, res, next) => {
-    // TODO: try/catch
-    const currentUserId = req.session.passport.user
-    const currentUser = await User.findById(currentUserId)
-
-    const newTree = await Tree.create({
-        owner: currentUserId,
-        title: req.body.title || 'New Family Tree'
-    })
-
-    currentUser.trees.push(newTree.id)
-
-    await currentUser.save()
-
-    return res.redirect('/user/profile')
-
-    // next()
+    try {
+        const currentUserId = req.session.passport?.user
+        const currentUser = await User.findById(currentUserId)
+        if (!currentUser) {
+            return res
+                .status(401)
+                .json({
+                    error: 'Please log in'
+                })
+        }
+        const treeTitle = req.body.title
+        if (!treeTitle) {
+            return res
+                .status(401)
+                .json({
+                    error: 'Please provide tree title!'
+                })
+        }
+        const newTree = await Tree.create({
+            owner: currentUserId,
+            title: treeTitle
+        })
+        currentUser.trees.push(newTree.id)
+        await currentUser.save()
+        return res
+            .redirect(`/tree/${newTree.id}`)
+    } catch (err) {
+        return next(err)
+    }
 }
 
 
@@ -50,6 +63,6 @@ exports.getTreePage = async (req, res, next) => {
         title: tree.title,
         tree
     })
-    next()
+    // next()
 }
 
