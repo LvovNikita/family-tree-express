@@ -82,7 +82,8 @@ exports.getTreePage = async (req, res, next) => {
             // .populate('persons')
         return res.render('tree', {
             title: tree.title,
-            tree
+            // tree,
+            debugData: tree
         })
     } catch (err) {
         next(err)

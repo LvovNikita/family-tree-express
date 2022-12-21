@@ -1,0 +1,21 @@
+<a href="/person/<%= person.id %>">
+    <b><%= person.lastname %></b>
+    <% if (person.lastnameAtBirth) { %>
+        (<%= person.lastnameAtBirth %>)
+    <% } %>
+    <b><%= person.firstname %></b>
+    <b><%= person.middlename %></b>,
+    <%= person.gender %>,
+
+    <% if (!person.dob) { %>
+        ????
+    <% } else { %>
+        <%= (new Date(person.dob)).getFullYear() %>
+    <% } %>
+    –
+    <% if (!person.dod) { %>
+        ????
+    <% } else { %>
+        <%= person.dod %>
+    <% } %>
+</a>

@@ -1,6 +1,4 @@
-<h1><%= title %></h1>
-
-<form action="/person/create" method="post">
+<form class="mb-3" action="/person/create" method="post">
     <!-- NAME -->
     <section>
         <div class="input-group mb-3">
@@ -59,26 +57,7 @@
                 <option value="" disabled selected></option>
                 <% for (person of persons) { %>
                     <option value="<%= person.id %>">
-                        <!-- TODO: make component! -->
-                        <%= person.lastname %>
-                        <% if (person.lastnameAtBirth) { %>
-                            (<%= person.lastnameAtBirth %>)
-                        <% } %>
-                        <%= person.firstname %> 
-                        <%= person.middlename %>
-                        <%= person.gender %>
-                        
-                        <% if (!person.dob) { %>
-                            unknown
-                        <% } else { %>
-                            <%= (new Date(person.dob)).getFullYear() %>
-                        <% } %>
-                        –
-                        <% if (!person.dod) { %>
-                            unknown
-                        <% } else { %>
-                            <%= person.dod %>
-                        <% } %>
+                        <%- include('partials/userInfo') %>
                     </option>
                 <% } %>
             </select>
@@ -90,26 +69,7 @@
             <select class="form-select" name="children" multiple>
                 <% for (person of persons) { %>
                     <option value="<%= person.id %>">
-                        <!-- TODO: make component! -->
-                        <%= person.lastname %>
-                        <% if (person.lastnameAtBirth) { %>
-                            (<%= person.lastnameAtBirth %>)
-                        <% } %>
-                        <%= person.firstname %> 
-                        <%= person.middlename %>
-                        <%= person.gender %>
-                        
-                        <% if (!person.dob) { %>
-                            unknown
-                        <% } else { %>
-                            <%= (new Date(person.dob)).getFullYear() %>
-                        <% } %>
-                        –
-                        <% if (!person.dod) { %>
-                            unknown
-                        <% } else { %>
-                            <%= person.dod %>
-                        <% } %>
+                        <%- include('partials/userInfo') %>
                     </option>
                 <% } %>
             </select>

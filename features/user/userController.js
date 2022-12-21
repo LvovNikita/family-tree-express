@@ -23,7 +23,8 @@ const userController = {
                     .status(200)
                     .render('profile', {
                         title: 'Profile',
-                        user
+                        user,
+                        debugData: user
                     })
             } catch (err) {
                 next(err)

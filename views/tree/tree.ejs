@@ -1,22 +1,6 @@
-<h1>Family Tree: <%= title %></h1>
 <h2>Persons</h2>
+<!-- TODO: add and remove persons -->
 
-<!-- TODO: make component -->
-<ul>
-    <% for (person of tree.persons) { %>
-        <li>
-            <form action="/person/remove/<%= person.id %>" method="POST">
-                <a href="/person/<%= person.id %>"><%= person %></a>
-                <button>Remove</button>
-            </form>
-        </li>
-    <% } %>
-</ul>
+<!-- TODO: render tree -->
 
-<!-- TODO: component-->
-<div class="card">
-    <div class="card-body">
-        <h3>Debug Info</h3>
-        <pre><%= tree %></pre>
-    </div>
-</div>
+<%- include('../partials/debug.ejs') %>
